@@ -1,0 +1,232 @@
+{
+  "invitation": {
+    "demoSchemaVersion": 13,
+    "groupKey": "wedding",
+    "title": "Thiệp cưới Hà Thế Vinh & Tạ Tú Anh",
+    "groomName": "Hà Thế Vinh",
+    "brideName": "Tạ Tú Anh",
+    "groomAvatar": "https://api.traothiep.vn/public/uploads/images/1784531987834-455e49bf86.png",
+    "brideAvatar": "https://api.traothiep.vn/public/uploads/images/1784531995193-81569e28db.png",
+    "weddingDate": "2026-10-04",
+    "mainColor": "#a3212b",
+    "fontFamily": "Baskerville",
+    "musicUrl": "https://api.traothiep.vn/public/uploads/music/1780485884960-b2656f88ce.mp3",
+    "events": [
+      {
+        "type": "wedding",
+        "title": "LỄ THÀNH HÔN ĐƯỢC CỬ HÀNH TẠI\nTƯ GIA",
+        "date": "2026-10-03",
+        "time": "09:00",
+        "sortOrder": 0
+      }
+    ],
+    "config": {
+      "locale": "vi",
+      "demoGuest": {
+        "name": "Cô Dì Chú Bác Gần Xa",
+        "groupName": "Trân trọng kính mời",
+        "note": "Đến dự buổi tiệc chung vui cùng gia đình"
+      },
+      "couple": {
+        "groomNickname": "Thế Vinh",
+        "brideNickname": "Tú Anh",
+        "groomRole": "Trưởng nam",
+        "brideRole": "Út nữ",
+        "order": "groomFirst",
+        "shortDescription": "Trân trọng kính mời quý khách đến chung vui cùng gia đình chúng tôi."
+      },
+      "family": {
+        "groomFather": "Hà Thế Cường",
+        "groomMother": "Phùng Thị Thắm",
+        "groomAddress": "Gia Lai",
+        "brideFather": "Tạ Quang Hòa",
+        "brideMother": "Đinh Thị Lụa",
+        "brideAddress": "Tp.HCM"
+      },
+      "invitationText": "TRÂN TRỌNG BÁO TIN\nLỄ THÀNH HÔN CỦA CON CHÚNG TÔI",
+      "album": {
+        "enabled": true,
+        "layout": "stack",
+        "images": [
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-3a079067aa.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-a8c166c9bb.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-06e2f00fde.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-91e2e88bb3.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-c6ffb328dc.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-ca82c218b3.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023712-f72dfd45f9.png",
+          "https://api.traothiep.vn/public/uploads/images/1784532023728-9584de1d9d.png"
+        ]
+      },
+      "reception": {
+        "enabled": true,
+        "kind": "wedding",
+        "title": "Tiệc cưới sẽ diễn ra vào lúc",
+        "date": "2026-10-04",
+        "welcomeTime": "17:30",
+        "partyTime": "18:30",
+        "time": "18:30",
+        "countdown": true,
+        "venueName": "Nhà hàng tiệc cưới Grand Palace",
+        "address": "63 Mạc Đĩnh Chi, Tân Định, Hồ Chí Minh",
+        "mapUrl": "",
+        "mapEmbedUrl": "https://maps.google.com/maps?q=63%20M%E1%BA%A1c%20%C4%90%C4%A9nh%20Chi%2C%20T%C3%A2n%20%C4%90%E1%BB%8Bnh%2C%20H%E1%BB%93%20Ch%C3%AD%20Minh&output=embed"
+      },
+      "timeline": {
+        "enabled": true,
+        "title": "Lịch trình ngày cưới",
+        "items": [
+          {
+            "time": "17:30",
+            "title": "Đón khách",
+            "localId": "timeline-1780588873249-puoqvj",
+            "description": ""
+          },
+          {
+            "time": "18:30",
+            "title": "Khai tiệc",
+            "localId": "timeline-1780588873249-gsxqxu",
+            "description": ""
+          },
+          {
+            "time": "18:45",
+            "title": "Rót rượu, cắt bánh",
+            "localId": "timeline-1780588873249-6j5f1f",
+            "description": ""
+          },
+          {
+            "time": "19:00",
+            "title": "Phục vụ món chính",
+            "localId": "timeline-1780588873249-t3660e",
+            "description": ""
+          },
+          {
+            "time": "21:00",
+            "title": "Kết thúc tiệc",
+            "localId": "timeline-1780588873249-hp9p1h",
+            "description": ""
+          }
+        ]
+      },
+      "dressCode": {
+        "enabled": true,
+        "colors": [
+          "#9d1f1f",
+          "#d6a84f"
+        ]
+      },
+      "rsvp": {
+        "enabled": true,
+        "deadline": "2026-06-28",
+        "askMessage": false,
+        "message": "Hãy xác nhận để gia đình chúng tôi chuẩn bị đón tiếp chu đáo hơn."
+      },
+      "wishes": {
+        "enabled": true,
+        "autoApprove": false
+      },
+      "bankAccounts": [
+        {
+          "side": "groom",
+          "bank": "Vietcombank",
+          "bankBin": "970436",
+          "bankCode": "VCB",
+          "bankShortName": "Vietcombank",
+          "bankName": "Ngân hàng TMCP Ngoại thương Việt Nam",
+          "bankSearch": "Vietcombank - Ngân hàng TMCP Ngoại Thương Việt Nam",
+          "accountName": "HA THE VINH",
+          "accountNumber": "0123456789",
+          "localId": "bank-1780588873249-sd6xx6"
+        },
+        {
+          "side": "bride",
+          "bank": "Techcombank",
+          "bankBin": "970407",
+          "bankCode": "TCB",
+          "bankShortName": "Techcombank",
+          "bankName": "Ngân hàng TMCP Kỹ thương Việt Nam",
+          "bankSearch": "Techcombank - Ngân hàng TMCP Kỹ Thương Việt Nam",
+          "accountName": "TA TU ANH",
+          "accountNumber": "9876543210",
+          "localId": "bank-1780588873249-mqm5ij"
+        }
+      ],
+      "envelope": {
+        "enabled": true,
+        "title": "Phong bao mừng cưới",
+        "note": "Sự hiện diện của bạn là món quà quý giá nhất. Nếu muốn gửi thêm lời chúc phúc, chúng tôi xin trân trọng đón nhận qua thông tin bên dưới."
+      },
+      "thanks": {
+        "message": "Sự hiện diện của quý khách là niềm vinh hạnh của gia đình chúng tôi!"
+      },
+      "theme": {
+        "background": "#fff7f2",
+        "effect": "soft",
+        "sections": {
+          "avatars": true,
+          "family": true,
+          "album": true,
+          "timeline": true,
+          "dressCode": true,
+          "rsvp": true,
+          "wishes": true
+        }
+      },
+      "eventsSection": {
+        "enabled": true
+      },
+      "faq": {
+        "enabled": true,
+        "items": [
+          {
+            "localId": "faq-1783447667754-brx62o",
+            "question": "Làm sao để đến địa điểm tổ chức?",
+            "answer": "Thông tin địa điểm và bản đồ đã có ở phần thông tin tổ chức phía trên. Quý khách vui lòng xem link bản đồ để biết địa chỉ chính xác."
+          },
+          {
+            "localId": "faq-1783447667754-cwqi5w",
+            "question": "Mình có thể dẫn theo bạn đi cùng không?",
+            "answer": "Đây là buổi tiệc thân mật với số lượng khách mời giới hạn, mong quý khách thông cảm và chỉ tham dự theo đúng lời mời."
+          },
+          {
+            "localId": "faq-1783447667754-prnvaz",
+            "question": "Có chỗ đậu xe tại địa điểm tổ chức không?",
+            "answer": "Quý khách vui lòng chủ động sắp xếp phương tiện di chuyển đến địa điểm tổ chức, chúng tôi sẵn sàng hỗ trợ thông tin nếu cần."
+          }
+        ]
+      },
+      "styleOverrides": {},
+      "advancedOverrides": {}
+    },
+    "templateId": 48,
+    "slug": "demo-tc29-gam-son-theu-hy",
+    "ogImage": null,
+    "seoTitle": null,
+    "seoDescription": null,
+    "status": "published",
+    "id": "demo-48",
+    "templateSlug": "tc29-gam-son-theu-hy",
+    "rendererKey": "brocade-embroidery-wedding",
+    "template": {
+      "id": 48,
+      "name": "TC29: Đan Chỉ Khóa Tim",
+      "slug": "tc29-gam-son-theu-hy",
+      "thumbnail": "/templates/tc29-gam-son-theu-hy/thumbscreen.jpg",
+      "screencapture": "/templates/tc29-gam-son-theu-hy/screencapture.jpg",
+      "screencaptureOffsetY": 280,
+      "groupKey": "wedding",
+      "typeKey": null,
+      "editorKey": "wedding",
+      "rendererKey": "brocade-embroidery-wedding",
+      "sortOrder": 3,
+      "description": "Hết thời mập mờ, nay thêu tay chỉ vàng chốt kèo luôn. Click mở khung gấm xem visual đám cưới ngay!",
+      "isActive": true,
+      "config": {
+        "mainColor": "#a3212b",
+        "accentColor": "#256b58"
+      },
+      "createdAt": "2026-07-18T14:56:49.400Z",
+      "updatedAt": "2026-09-09T09:27:21.936Z"
+    }
+  }
+}
