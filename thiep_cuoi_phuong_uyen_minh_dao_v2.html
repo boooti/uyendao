@@ -89,8 +89,141 @@
     .cover.hide {
       opacity: 0;
       visibility: hidden;
-      transform: scale(1.06) translateY(-40px);
+      transform: scale(1.04) translateY(-30px);
       pointer-events: none;
+    }
+
+    /* --- HIỆU ỨNG MỞ THIỆP: GẤM SON THÊU HỶ --- */
+    /* 1. Hai mép vải gấm son */
+    .gso-curtains-container {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+    .gso-curtain {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background-color: #580913;
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(195, 28, 48, 0.94) 0%, rgba(125, 12, 24, 0.98) 60%, #350308 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23ffd885' stroke-width='0.75' stroke-opacity='0.16'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z'/%3E%3Ccircle cx='22' cy='22' r='7'/%3E%3Ccircle cx='0' cy='0' r='5'/%3E%3Ccircle cx='44' cy='0' r='5'/%3E%3Ccircle cx='0' cy='44' r='5'/%3E%3Ccircle cx='44' cy='44' r='5'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: no-repeat, repeat;
+      background-size: cover, 44px 44px;
+      transition: transform 0.85s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    .gso-curtain-left {
+      left: 0;
+      transform-origin: left center;
+      border-right: 2.5px solid #ffd885;
+      box-shadow: inset -6px 0 20px rgba(0, 0, 0, 0.4), 8px 0 30px rgba(0, 0, 0, 0.6);
+    }
+    .gso-curtain-right {
+      right: 0;
+      transform-origin: right center;
+      border-left: 2.5px solid #ffd885;
+      box-shadow: inset 6px 0 20px rgba(0, 0, 0, 0.4), -8px 0 30px rgba(0, 0, 0, 0.6);
+    }
+    .curtains-parting .gso-curtain-left {
+      transform: translateX(-100%);
+    }
+    .curtains-parting .gso-curtain-right {
+      transform: translateX(100%);
+    }
+    .curtains-parting .gso-frame {
+      opacity: 0;
+      transform: scale(0.92);
+      transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Khuy gấm mở */
+    .gso-cta-pill.knot-opening {
+      transform: scale(1.08);
+      background: linear-gradient(180deg, #fff0c7 0%, #ffd987 60%, #b88628 100%);
+      box-shadow: 0 0 35px #ffd885, inset 0 0 8px #fff;
+    }
+    .gso-cta-pill.knot-opening .gso-cta-knot {
+      transform: scale(1.4) rotate(45deg);
+      opacity: 0.15;
+      transition: all 0.35s ease;
+      box-shadow: 0 0 25px #ffd885;
+    }
+    .gso-cta-pill.knot-opening .gso-cta-text {
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    /* 2. Chữ 囍 xuất hiện phát sáng */
+    .gso-ceremony-hy {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.3);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .gso-ceremony-halo {
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 235, 175, 0.8) 0%, rgba(223, 181, 100, 0.4) 45%, rgba(158, 20, 37, 0) 70%);
+      animation: pulse-halo 2s ease-in-out infinite;
+    }
+    @keyframes pulse-halo {
+      0%, 100% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.15); opacity: 1; }
+    }
+    .gso-ceremony-char {
+      font-size: 110px;
+      font-weight: 800;
+      line-height: 1;
+      background: linear-gradient(135deg, #ffffff 0%, #fff2be 30%, #ffd987 60%, #d4af6a 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 35px rgba(255, 217, 135, 0.95)) drop-shadow(0 4px 18px rgba(0, 0, 0, 0.6));
+    }
+    .show-hy .gso-ceremony-hy {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* 3. Một đường chỉ vàng chạy ngang */
+    .gso-thread-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 0%;
+      height: 3.5px;
+      background: linear-gradient(90deg, transparent 0%, #e5be70 20%, #ffd987 50%, #ffffff 98%, #ffffff 100%);
+      box-shadow: 0 0 16px #ffd987, 0 0 30px #ffeaa3, 0 0 6px #ffffff;
+      transform: translateY(-50%);
+      z-index: 9;
+      pointer-events: none;
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .gso-thread-needle {
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ffffff 30%, #ffd987 70%, transparent 100%);
+      box-shadow: 0 0 18px #ffffff, 0 0 28px #ffd987;
+    }
+    .shoot-thread .gso-thread-line {
+      width: 100%;
     }
 
     .particles {
@@ -267,9 +400,19 @@
       font-family: 'Playfair Display', serif;
       font-size: 30px;
       font-weight: 700;
-      color: #ffffff;
       line-height: 1.15;
-      text-shadow: 0 3px 14px rgba(0, 0, 0, 0.5);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .gso-name {
+      display: block;
+      background: linear-gradient(135deg, #fffdf2 0%, #ffd987 40%, #e5b352 80%, #b88628 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.65));
+      letter-spacing: 0.02em;
     }
     .gso-amp {
       font-family: 'Alex Brush', cursive;
@@ -279,6 +422,7 @@
       margin: 8px 0 4px;
       line-height: 1;
       font-weight: normal;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
     }
     .gso-date-badge {
       display: inline-block;
@@ -415,16 +559,23 @@
     .hero-name {
       display: block;
       line-height: 1.15;
+      background: linear-gradient(135deg, #fffcf0 0%, #ffd987 35%, #f6c86e 65%, #d49a30 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.85)) drop-shadow(0 4px 22px rgba(80, 8, 16, 0.9));
+      letter-spacing: 0.02em;
     }
     .hero h1 em, .hero-amp {
       display: block;
       font-family: 'Alex Brush', cursive;
       font-style: normal;
       font-size: 0.52em;
-      color: var(--gold-light);
+      color: #ffe8ab;
       margin: 15px 0 8px;
       line-height: 1;
       font-weight: 400;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.75);
     }
     .hero-date-banner {
       display: inline-block;
@@ -1209,6 +1360,315 @@
     }
     .wish-time { font-size: 11px; opacity: 0.7; font-weight: normal; }
 
+    /* --- RSVP SUCCESS CONFIRMATION MODAL (ĐÃ XÁC NHẬN ✓) --- */
+    .rsvp-success-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .rsvp-success-modal.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .rsm-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(30, 3, 7, 0.82);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .rsm-card {
+      position: relative;
+      z-index: 2;
+      width: min(94vw, 420px);
+      background: radial-gradient(circle at 50% 0%, #8c1221 0%, #590914 65%, #35040a 100%);
+      border: 2px solid #ffd885;
+      border-radius: 26px;
+      padding: 34px 22px 28px;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), 0 0 40px rgba(223, 181, 100, 0.35);
+      transform: scale(0.9) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .rsvp-success-modal.show .rsm-card {
+      transform: scale(1) translateY(0);
+    }
+    .rsm-check-badge {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ffe8a3 0%, #d4af6a 50%, #9e6412 100%);
+      border: 2px solid #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      font-weight: 900;
+      color: #45080f;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 232, 163, 0.6);
+      animation: check-bounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    @keyframes check-bounce {
+      0% { transform: scale(0.4); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .rsm-hy {
+      font-size: 26px;
+      color: #ffd885;
+      margin-bottom: 2px;
+    }
+    .rsm-title {
+      margin: 0 0 6px;
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      color: #fff7d6;
+      letter-spacing: 0.04em;
+    }
+    .rsm-guest-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: #ffd885;
+      margin-bottom: 14px;
+    }
+    .rsm-status-box {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 235, 185, 0.35);
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      text-align: left;
+    }
+    .rsm-stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13.5px;
+      padding: 4px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    }
+    .rsm-stat-row:last-child {
+      border-bottom: none;
+    }
+    .rsm-stat-row span {
+      color: rgba(255, 235, 190, 0.85);
+    }
+    .rsm-message {
+      font-size: 13.5px;
+      line-height: 1.65;
+      color: #f7eee2;
+      margin: 0 0 20px;
+    }
+
+    /* --- GUEST PHOTO UPLOAD SECTION (ẢNH KHÁCH MỜI SAU TIỆC) --- */
+    .guest-album-box {
+      margin-top: 36px;
+      background: #ffffff;
+      border: 1.5px solid rgba(212, 175, 106, 0.45);
+      border-radius: 22px;
+      padding: 28px 20px 24px;
+      box-shadow: 0 12px 36px rgba(90, 15, 25, 0.08);
+      text-align: center;
+      position: relative;
+    }
+    .guest-album-header {
+      margin-bottom: 20px;
+    }
+    .guest-album-icon {
+      font-size: 38px;
+      margin-bottom: 6px;
+    }
+    .guest-album-title {
+      margin: 4px 0 10px;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(22px, 5.5vw, 28px);
+      font-weight: 700;
+      color: var(--crimson-main);
+    }
+    .guest-album-lead {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .guest-upload-zone {
+      border: 2px dashed rgba(186, 140, 62, 0.55);
+      background: radial-gradient(circle at 50% 50%, #fffdfa 0%, #faf3e6 100%);
+      border-radius: 18px;
+      padding: 24px 16px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .guest-upload-zone:hover {
+      border-color: #ba8c3e;
+      background: #fffdf5;
+      box-shadow: 0 6px 20px rgba(186, 140, 62, 0.15);
+    }
+    .upload-prompt b {
+      display: block;
+      font-size: 15px;
+      color: var(--crimson-main);
+      margin-bottom: 2px;
+    }
+    .upload-prompt span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .guest-upload-btn {
+      margin-top: 6px;
+      padding: 11px 26px;
+      font-size: 13.5px;
+    }
+    .guest-preview-area {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .guest-preview-title {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--crimson-main);
+      margin-bottom: 10px;
+    }
+    .guest-preview-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .guest-preview-item {
+      position: relative;
+      aspect-ratio: 1;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 175, 106, 0.4);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .guest-preview-item:hover {
+      transform: scale(1.05);
+    }
+    .guest-preview-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .guest-upload-success-note {
+      font-size: 12.5px;
+      font-style: italic;
+      color: #2e7d32;
+      background: #e8f5e9;
+      border: 1px solid #c8e6c9;
+      border-radius: 8px;
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .guest-cloud-links {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px dashed rgba(212, 175, 106, 0.35);
+    }
+    .cloud-album-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: rgba(158, 20, 37, 0.08);
+      color: var(--crimson-main);
+      border: 1px solid rgba(158, 20, 37, 0.25);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .cloud-album-btn:hover {
+      background: var(--crimson-main);
+      color: #ffffff;
+    }
+
+    /* --- SHARE INVITATION SECTION (CHIA SẺ THIỆP) --- */
+    .share-card {
+      margin: 36px auto 16px;
+      max-width: 440px;
+      background: radial-gradient(circle at 50% 0%, #ffffff 0%, #faf3e6 100%);
+      border: 1.5px solid rgba(212, 175, 106, 0.55);
+      border-radius: 22px;
+      padding: 26px 18px 22px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(90, 15, 25, 0.06);
+    }
+    .share-title {
+      margin: 2px 0 6px;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--crimson-main);
+    }
+    .share-desc {
+      font-size: 13.5px;
+      color: var(--muted);
+      margin: 0 auto 18px;
+      max-width: 380px;
+      line-height: 1.5;
+    }
+    .share-btns-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    .share-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 6px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid rgba(212, 175, 106, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+    .share-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(90, 15, 25, 0.12);
+      border-color: #ba8c3e;
+    }
+    .share-btn-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fdfaf5;
+      box-shadow: inset 0 0 0 1px rgba(212, 175, 106, 0.25);
+    }
+    .share-btn-label {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .share-zalo:hover .share-btn-label { color: #0068ff; }
+    .share-messenger:hover .share-btn-label { color: #006aff; }
+    .share-copy:hover .share-btn-label { color: #ba8c3e; }
+
     /* --- 10. BANK QR & GIFT --- */
     .gift-wrap {
       max-width: 440px;
@@ -1571,6 +2031,23 @@
 
   <!-- 1. TC29 SIGNATURE OPENING SCREEN: GẤM SON THÊU HỶ -->
   <div class="cover" id="cover">
+    <!-- Hai mép vải gấm son tách nhẹ -->
+    <div class="gso-curtains-container">
+      <div class="gso-curtain gso-curtain-left"></div>
+      <div class="gso-curtain gso-curtain-right"></div>
+    </div>
+
+    <!-- Chữ 囍 xuất hiện phát sáng -->
+    <div class="gso-ceremony-hy" id="ceremonyHy">
+      <div class="gso-ceremony-halo"></div>
+      <span class="gso-ceremony-char">囍</span>
+    </div>
+
+    <!-- Một đường chỉ vàng chạy ngang -->
+    <div class="gso-thread-line" id="ceremonyThread">
+      <div class="gso-thread-needle"></div>
+    </div>
+
     <div class="particles" id="coverParticles"></div>
     <div class="gso-frame">
       <div class="gso-corner gso-corner--tl"></div>
@@ -1917,6 +2394,55 @@
 
           <div class="album-thumbs" id="albumThumbs"></div>
         </div>
+
+        <!-- KHOẢNH KHẮC KHÁCH MỜI - GỬI ẢNH CHỤP TẠI ĐÁM CƯỚI -->
+        <div class="guest-album-box reveal">
+          <div class="guest-album-header">
+            <div class="guest-album-icon">📷</div>
+            <div class="eyebrow" style="color: #ba8c3e; margin-bottom: 4px;">Kỷ Niệm Cùng Bạn Bè</div>
+            <h3 class="guest-album-title">Gửi Ảnh Bạn Chụp Tại Đám Cưới</h3>
+            <p class="guest-album-lead">
+              Bạn có những khoảnh khắc đẹp, vui tươi hay những tấm hình selfie cùng cô dâu &amp; chú rể trong ngày cưới? Hãy cùng chia sẻ vào album chung này để chúng mình cùng lưu giữ trọn vẹn từng kỷ niệm ngọt ngào nhé!
+            </p>
+          </div>
+
+          <div class="guest-upload-card">
+            <div class="guest-upload-zone" id="guestUploadZone">
+              <input type="file" id="guestPhotoInput" multiple accept="image/*" style="display: none;">
+              <div class="upload-art">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#ba8c3e" stroke-width="1.8">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </div>
+              <div class="upload-prompt">
+                <b>Chạm để chọn &amp; tải ảnh từ điện thoại của bạn</b>
+                <span>Hỗ trợ tải nhiều ảnh cùng lúc (JPG, PNG)</span>
+              </div>
+              <button type="button" class="btn btn-gold guest-upload-btn" id="guestSelectBtn">
+                📸 Tải Ảnh Lên Album Ngay
+              </button>
+            </div>
+
+            <!-- Preview list -->
+            <div class="guest-preview-area" id="guestPreviewArea" style="display: none;">
+              <div class="guest-preview-title">✨ Ảnh bạn vừa đóng góp (<span id="guestPhotoCount">0</span> tấm):</div>
+              <div class="guest-preview-grid" id="guestPreviewGrid"></div>
+              <div class="guest-upload-success-note">
+                Cảm ơn bạn đã đóng góp khoảnh khắc tuyệt vời này vào ngày vui của Phương Uyên &amp; Quang Đạo! ❤️
+              </div>
+            </div>
+
+            <!-- Google Drive / Photos Link -->
+            <div class="guest-cloud-links">
+              <a href="https://photos.google.com/" target="_blank" rel="noopener" class="cloud-album-btn" id="cloudAlbumLink">
+                <span>📂 Mở Album Google Photos / Drive Chung</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -1953,22 +2479,22 @@
             <div class="form-group">
               <label>BẠN SẼ THAM DỰ CHỨ? *</label>
               <select name="attendance" id="rsvpAttendance" class="form-select">
-                <option value="Tham dự">Chắc chắn tham dự ♡</option>
-                <option value="Không tham dự">Rất tiếc, bận việc không thể đến</option>
+                <option value="Tham dự" selected>Có tham dự ♡</option>
+                <option value="Không tham dự">Không tham dự</option>
               </select>
             </div>
             <div class="form-group" id="guestsGroup">
-              <label>SỐ LƯỢNG NGƯỜI THAM DỰ</label>
-              <select name="guests" class="form-select">
+              <label>SỐ NGƯỜI ĐI CÙNG</label>
+              <select name="guests" id="rsvpGuests" class="form-select">
                 <option value="1">1 người (Đi một mình)</option>
-                <option value="2" selected>2 người (Đi cùng người thương)</option>
-                <option value="3">3 người (Đi cùng gia đình/bé nhỏ)</option>
-                <option value="4">4 người</option>
+                <option value="2" selected>2 người (Đi cùng 1 người)</option>
+                <option value="3">3 người (Đi cùng 2 người)</option>
+                <option value="4">4 người (Đi cùng 3 người trở lên)</option>
               </select>
             </div>
             <div class="form-group">
-              <label>SỐ ĐIỆN THOẠI (TÙY CHỌN)</label>
-              <input type="tel" name="phone" placeholder="0901 234 567" class="form-input">
+              <label>SỐ ĐIỆN THOẠI</label>
+              <input type="tel" name="phone" id="rsvpPhone" placeholder="Ví dụ: 0901234567" class="form-input">
             </div>
             <div class="form-group">
               <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
@@ -2043,6 +2569,49 @@
           </div>
           <button type="button" class="btn-copy" id="copyStkBtn">📋 Sao chép số tài khoản</button>
         </div>
+
+        <!-- CỤM NÚT CHIA SẺ THIỆP -->
+        <div class="share-card reveal">
+          <div class="eyebrow" style="color: var(--crimson-main);">Lan Tỏa Niềm Vui</div>
+          <h3 class="share-title">Chia Sẻ Thiệp Cưới</h3>
+          <p class="share-desc">Gửi thiệp cưới của Phương Uyên &amp; Quang Đạo tới bạn bè, người thân:</p>
+          <div class="share-btns-group">
+            <!-- Zalo -->
+            <button type="button" class="share-btn share-zalo" id="shareZaloBtn" title="Chia sẻ qua Zalo">
+              <div class="share-btn-icon">
+                <svg viewBox="0 0 48 48" width="24" height="24">
+                  <circle cx="24" cy="24" r="23" fill="#0068FF"/>
+                  <path d="M11 25.5c0-6.9 6.3-12.5 14-12.5s14 5.6 14 12.5c0 6.9-6.3 12.5-14 12.5-2.2 0-4.3-.5-6.1-1.3l-5.6 1.8c-.8.3-1.6-.4-1.3-1.2l1.3-4.5c-1.5-2-2.3-4.5-2.3-6.8z" fill="#fff"/>
+                  <text x="24" y="29" font-size="10.5" font-weight="900" fill="#0068FF" text-anchor="middle" font-family="sans-serif">Zalo</text>
+                </svg>
+              </div>
+              <span class="share-btn-label">Zalo</span>
+            </button>
+
+            <!-- Messenger -->
+            <button type="button" class="share-btn share-messenger" id="shareMessengerBtn" title="Chia sẻ qua Messenger">
+              <div class="share-btn-icon">
+                <svg viewBox="0 0 48 48" width="24" height="24">
+                  <circle cx="24" cy="24" r="23" fill="#0084FF"/>
+                  <path d="M24 10C16.3 10 10 15.7 10 22.8c0 4 2 7.6 5.3 10v4.7c0 .6.7 1 1.2.7l4.8-2.6c.9.3 1.8.4 2.7.4 7.7 0 14-5.7 14-12.8S31.7 10 24 10zm2.3 16.5l-3.8-4-7.4 4 8.1-8.6 3.9 4 7.3-4-8.1 8.6z" fill="#fff"/>
+                </svg>
+              </div>
+              <span class="share-btn-label">Messenger</span>
+            </button>
+
+            <!-- Copy link -->
+            <button type="button" class="share-btn share-copy" id="shareCopyBtn" title="Sao chép liên kết thiệp">
+              <div class="share-btn-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#ba8c3e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+              </div>
+              <span class="share-btn-label">Copy link</span>
+            </button>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -2062,6 +2631,29 @@
   <div class="lightbox" id="lightbox">
     <button class="lightbox-close" id="lbClose">✕</button>
     <img id="lbImg" src="" alt="Ảnh cưới phóng to">
+  </div>
+
+  <!-- POPUP MODAL ĐÃ XÁC NHẬN ✓ -->
+  <div class="rsvp-success-modal" id="rsvpSuccessModal">
+    <div class="rsm-backdrop" id="rsmBackdrop"></div>
+    <div class="rsm-card">
+      <div class="rsm-check-badge">✓</div>
+      <div class="rsm-hy">囍</div>
+      <h3 class="rsm-title">Đã Xác Nhận ✓</h3>
+      <div class="rsm-guest-name" id="rsmGuestName">Khách Mời</div>
+      
+      <div class="rsm-status-box" id="rsmStatusBox"></div>
+
+      <p class="rsm-message">
+        Cảm ơn bạn đã gửi phản hồi và những lời chúc tốt đẹp! Sự hiện diện của bạn là niềm vinh hạnh to lớn cho Phương Uyên &amp; Quang Đạo cùng hai bên gia đình.
+      </p>
+
+      <div class="rsm-action">
+        <button type="button" class="btn btn-gold" id="rsmCloseBtn" style="width: 100%; padding: 13px;">
+          Xem Sổ Lưu Bút &amp; Tiếp Tục
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- TOAST NOTIFICATION -->
@@ -2116,15 +2708,41 @@
       }
     }
 
-    // Khi mở thiệp thì tự động quay về trang đầu tiên
+    // --- HIỆU ỨNG MỞ THIỆP: GẤM SON THÊU HỶ ---
+    // Khuy gấm mở -> Hai mép vải tách nhẹ -> Chữ 囍 xuất hiện -> Đường chỉ vàng chạy ngang -> Chuyển vào nội dung
+    let isOpeningCover = false;
     openInvite.onclick = () => {
-      cover.classList.add('hide');
-      window.scrollTo({ top: 0, behavior: 'instant' });
+      if (isOpeningCover) return;
+      isOpeningCover = true;
+
+      // 1. Khuy gấm mở
+      openInvite.classList.add('knot-opening');
+
+      // 2. Hai mép vải tách nhẹ
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, 50);
-      playAudio();
-      showToast('Chúc bạn một ngày tràn đầy niềm vui! ✨');
+        cover.classList.add('curtains-parting');
+      }, 260);
+
+      // 3. Chữ 囍 xuất hiện phát sáng
+      setTimeout(() => {
+        cover.classList.add('show-hy');
+      }, 520);
+
+      // 4. Một đường chỉ vàng chạy ngang
+      setTimeout(() => {
+        cover.classList.add('shoot-thread');
+      }, 820);
+
+      // 5. Chuyển vào nội dung
+      setTimeout(() => {
+        cover.classList.add('hide');
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 50);
+        playAudio();
+        showToast('Chúc bạn một ngày tràn đầy niềm vui & hạnh phúc! ✨');
+      }, 1380);
     };
 
     musicBtn.onclick = () => {
@@ -2184,18 +2802,19 @@
 
     // --- 4. TC29 SIGNATURE STACK ALBUM (KHUNG ẢNH XẾP CHỒNG THÊU GẤM) ---
     const albumPhotos = [
-      { url: 'images/anh_cuoi_ao_dai_do.jpg', caption: 'Song Hỷ Lâm Môn' },
-      { url: 'images/anh_cuoi_song_hy_dung.jpg', caption: 'Gấm Son Thêu Hỷ' },
+      { url: 'images/anh_cuoi_ao_dai_song_hy.jpg', caption: 'Song Hỷ Lâm Môn' },
+      { url: 'images/anh_cuoi_vay_cuoi_dung.jpg', caption: 'Bó Hoa Trao Tay' },
+      { url: 'images/anh_cuoi_ao_dai_rem_hoa.jpg', caption: 'Duyên Thắm Rèm Hoa' },
+      { url: 'images/anh_cuoi_vay_cuoi_nhin_nhau.jpg', caption: 'Nụ Cười Rạng Rỡ' },
       { url: 'images/anh_cuoi_che_du.jpg', caption: 'Dưới Cùng Một Mái Ô' },
-      { url: 'images/anh_cuoi_hon_ma_ao_dai.jpg', caption: 'Ngọt Ngào Yêu Thương' },
-      { url: 'images/anh_cuoi_ao_dai_chuyen_doi.jpg', caption: 'Duyên Nồng Thắm Thiết' },
+      { url: 'images/anh_cuoi_cua_so_hon_ma.jpg', caption: 'Hôn Má Ngọt Ngào' },
+      { url: 'images/anh_cuoi_nhin_nhau_ao_dai.jpg', caption: 'Nguyện Ước Sánh Đôi' },
+      { url: 'images/anh_cuoi_khieu_vu.jpg', caption: 'Vũ Điệu Tình Yêu' },
+      { url: 'images/anh_cuoi_hon_ma_ao_dai.jpg', caption: 'Gắn Kết Trọn Đời' },
+      { url: 'images/anh_cuoi_hon_tran.jpg', caption: 'Nụ Hôn Khăn Voan' },
       { url: 'images/anh_cuoi_trao_nhan.jpg', caption: 'Hẹn Ước Trăm Năm' },
-      { url: 'images/anh_cuoi_khan_voan.jpg', caption: 'Lời Thề Nguyện' },
-      { url: 'images/anh_cuoi_vuon_hoa.jpg', caption: 'Khu Vườn Hạnh Phúc' },
-      { url: 'images/anh_cuoi_pastel.jpg', caption: 'Thanh Xuân Bên Nhau' },
-      { url: 'images/anh_cuoi_cua_so.jpg', caption: 'Nắng Ấm Ban Mai' },
-      { url: 'images/anh_cuoi_studio_sang.jpg', caption: 'Sánh Bước Chung Đôi' },
-      { url: 'images/anh_cuoi_studio_nhe.jpg', caption: 'Khoảnh Khắc Bình Yên' }
+      { url: 'images/anh_cuoi_vows.jpg', caption: 'Lời Thề Trao Nhau' },
+      { url: 'images/anh_cuoi_ao_dai_do.jpg', caption: 'Tay Trong Tay Bình Yên' }
     ];
 
     const albumStage = document.getElementById('albumStackStage');
@@ -2390,14 +3009,17 @@
     const emptyWishes = document.getElementById('emptyWishes');
 
     // Ẩn/hiện số lượng người nếu không tham dự
-    if (rsvpAttendance && guestsGroup) {
-      rsvpAttendance.addEventListener('change', () => {
-        if (rsvpAttendance.value === 'Không tham dự') {
-          guestsGroup.style.display = 'none';
-        } else {
-          guestsGroup.style.display = 'block';
-        }
-      });
+    function updateGuestsVisibility() {
+      if (!rsvpAttendance || !guestsGroup) return;
+      if (rsvpAttendance.value === 'Không tham dự') {
+        guestsGroup.style.display = 'none';
+      } else {
+        guestsGroup.style.display = 'block';
+      }
+    }
+    if (rsvpAttendance) {
+      rsvpAttendance.addEventListener('change', updateGuestsVisibility);
+      updateGuestsVisibility();
     }
 
     // CẤU HÌNH GOOGLE APPS SCRIPT WEB APP ĐỂ GỬI TRỰC TIẾP VÀO GOOGLE SHEET
@@ -2435,10 +3057,22 @@
       const side = fd.get('side') || 'Nhà gái';
       const attendance = fd.get('attendance') || 'Tham dự';
       const guests = attendance === 'Không tham dự' ? 0 : parseInt(fd.get('guests') || 1, 10);
-      const phone = fd.get('phone') ? fd.get('phone').trim() : '';
+      const phoneRaw = fd.get('phone') ? fd.get('phone').trim() : '';
+      const phoneClean = phoneRaw.replace(/[\s.-]/g, '');
       const message = fd.get('message') ? fd.get('message').trim() : '';
 
       if (!name) return;
+
+      // KIỂM TRA CHẶN GỬI LẶP / SPAM THEO SỐ ĐIỆN THOẠI
+      const submittedPhones = JSON.parse(localStorage.getItem('weddingRSVP_phones') || '{}');
+      if (phoneClean) {
+        const count = submittedPhones[phoneClean] || 0;
+        if (count >= 2) {
+          showToast('Số điện thoại này đã gửi xác nhận rồi ạ! ❤️');
+          alert('Thông báo: Số điện thoại này (' + phoneRaw + ') đã gửi xác nhận thành công trước đó rồi ạ.\nNếu bạn cần thay đổi lịch trình hoặc số người tham dự, xin vui lòng nhắn tin trực tiếp cho cô dâu hoặc chú rể nhé!');
+          return;
+        }
+      }
 
       const now = new Date();
       const timeStr = now.getFullYear() + '-' +
@@ -2454,7 +3088,7 @@
         guests: guests,
         message: message || (attendance === 'Tham dự' ? 'Chúc mừng hạnh phúc đôi bạn!' : 'Chúc hai bạn mãi hạnh phúc viên mãn!'),
         side: side,
-        phone: phone
+        phone: phoneRaw
       };
 
       if (rsvpSubmitBtn) {
@@ -2490,19 +3124,155 @@
         const list = JSON.parse(localStorage.getItem('weddingRSVP_list') || '[]');
         list.unshift({ name, message: payload.message, time: timeStr, side });
         localStorage.setItem('weddingRSVP_list', JSON.stringify(list));
+
+        if (phoneClean) {
+          submittedPhones[phoneClean] = (submittedPhones[phoneClean] || 0) + 1;
+          localStorage.setItem('weddingRSVP_phones', JSON.stringify(submittedPhones));
+        }
       } catch (err) {}
 
       renderWish(name, timeStr, payload.message);
       rsvpForm.reset();
-      if (guestsGroup) guestsGroup.style.display = 'block';
+      updateGuestsVisibility();
+
       if (rsvpSubmitBtn) {
         rsvpSubmitBtn.disabled = false;
         rsvpSubmitBtn.innerText = 'GỬI XÁC NHẬN';
       }
+
+      // HIỆN MÀN HÌNH "ĐÃ XÁC NHẬN ✓"
+      const rsvpModal = document.getElementById('rsvpSuccessModal');
+      const rsmName = document.getElementById('rsmGuestName');
+      const rsmBox = document.getElementById('rsmStatusBox');
+      if (rsvpModal && rsmName && rsmBox) {
+        rsmName.innerText = name;
+        rsmBox.innerHTML = `
+          <div class="rsm-stat-row"><span>Khách mời:</span> <b>${side}</b></div>
+          <div class="rsm-stat-row"><span>Phản hồi:</span> <b style="color: ${attendance === 'Tham dự' ? '#ffd987' : '#ff9999'}">${attendance === 'Tham dự' ? 'Có tham dự ♡' : 'Không tham dự'}</b></div>
+          ${attendance === 'Tham dự' ? `<div class="rsm-stat-row"><span>Số người:</span> <b>${guests} người</b></div>` : ''}
+          ${phoneRaw ? `<div class="rsm-stat-row"><span>Số điện thoại:</span> <b>${phoneRaw}</b></div>` : ''}
+        `;
+        rsvpModal.classList.add('show');
+      }
+
       showToast('Cảm ơn bạn đã gửi xác nhận & lời chúc! ❤️');
     });
 
+    // Nút đóng modal Đã xác nhận
+    const rsmCloseBtn = document.getElementById('rsmCloseBtn');
+    const rsmBackdrop = document.getElementById('rsmBackdrop');
+    function closeRsvpModal() {
+      const rsvpModal = document.getElementById('rsvpSuccessModal');
+      if (rsvpModal) rsvpModal.classList.remove('show');
+      const guestbookEl = document.getElementById('guestbookList');
+      if (guestbookEl) {
+        guestbookEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+    if (rsmCloseBtn) rsmCloseBtn.onclick = closeRsvpModal;
+    if (rsmBackdrop) rsmBackdrop.onclick = closeRsvpModal;
+
     loadGuestbook();
+
+    // --- 8. GUEST PHOTO UPLOAD HANDLING ---
+    const guestPhotoInput = document.getElementById('guestPhotoInput');
+    const guestSelectBtn = document.getElementById('guestSelectBtn');
+    const guestUploadZone = document.getElementById('guestUploadZone');
+    const guestPreviewArea = document.getElementById('guestPreviewArea');
+    const guestPreviewGrid = document.getElementById('guestPreviewGrid');
+    const guestPhotoCount = document.getElementById('guestPhotoCount');
+
+    if (guestSelectBtn && guestPhotoInput) {
+      guestSelectBtn.onclick = (e) => {
+        e.stopPropagation();
+        guestPhotoInput.click();
+      };
+    }
+    if (guestUploadZone && guestPhotoInput) {
+      guestUploadZone.onclick = () => guestPhotoInput.click();
+    }
+
+    function renderGuestThumb(src) {
+      if (!guestPreviewGrid) return;
+      const item = document.createElement('div');
+      item.className = 'guest-preview-item';
+      item.innerHTML = `<img src="${src}" alt="Ảnh khách gửi">`;
+      item.onclick = () => openLightbox(src);
+      guestPreviewGrid.appendChild(item);
+    }
+
+    function loadGuestPhotos() {
+      try {
+        const saved = JSON.parse(localStorage.getItem('wedding_guest_photos') || '[]');
+        if (saved.length > 0 && guestPreviewArea && guestPhotoCount) {
+          guestPreviewArea.style.display = 'block';
+          guestPhotoCount.innerText = saved.length;
+          guestPreviewGrid.innerHTML = '';
+          saved.forEach(renderGuestThumb);
+        }
+      } catch (e) {}
+    }
+
+    if (guestPhotoInput) {
+      guestPhotoInput.addEventListener('change', (e) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+        const saved = JSON.parse(localStorage.getItem('wedding_guest_photos') || '[]');
+        let count = 0;
+        Array.from(files).forEach(file => {
+          if (!file.type.startsWith('image/')) return;
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            const dataUrl = evt.target.result;
+            saved.push(dataUrl);
+            localStorage.setItem('wedding_guest_photos', JSON.stringify(saved));
+            renderGuestThumb(dataUrl);
+            count++;
+            if (guestPreviewArea) guestPreviewArea.style.display = 'block';
+            if (guestPhotoCount) guestPhotoCount.innerText = saved.length;
+            if (count === files.length) {
+              showToast(`Đã thêm ${files.length} ảnh vào album! Cảm ơn bạn! 📷✨`);
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+      });
+    }
+    loadGuestPhotos();
+
+    // --- 9. SHARE INVITATION BUTTONS (ZALO, MESSENGER, COPY LINK) ---
+    const shareUrl = window.location.href;
+    const shareTitle = 'Thiệp cưới Phương Uyên & Quang Đạo - 20.12.2026';
+    const shareText = 'Trân trọng kính mời bạn đến chung vui trong ngày thành hôn của Phương Uyên & Quang Đạo!';
+
+    const shareZaloBtn = document.getElementById('shareZaloBtn');
+    if (shareZaloBtn) {
+      shareZaloBtn.onclick = () => {
+        window.open(`https://zalo.me/share?url=${encodeURIComponent(shareUrl)}`, '_blank');
+      };
+    }
+
+    const shareMessengerBtn = document.getElementById('shareMessengerBtn');
+    if (shareMessengerBtn) {
+      shareMessengerBtn.onclick = () => {
+        if (navigator.share) {
+          navigator.share({ title: shareTitle, text: shareText, url: shareUrl }).catch(() => {});
+        } else {
+          window.open(`https://www.facebook.com/dialog/send?link=${encodeURIComponent(shareUrl)}&app_id=291494419107518&redirect_uri=${encodeURIComponent(shareUrl)}`, '_blank');
+        }
+      };
+    }
+
+    const shareCopyBtn = document.getElementById('shareCopyBtn');
+    if (shareCopyBtn) {
+      shareCopyBtn.onclick = () => {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast('Đã sao chép liên kết thiệp cưới! 📋');
+        }).catch(() => {
+          showToast('Link thiệp: ' + shareUrl);
+        });
+      };
+    }
 
     // Floating Heart
     document.getElementById('heartBtn').onclick = (e) => {
