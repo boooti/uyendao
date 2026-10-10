@@ -579,19 +579,13 @@
       margin-top: 10px;
     }
 
-    /* --- 4. CEREMONY & RECEPTION DUAL CARDS (RÕ RÀNG, SANG TRỌNG) --- */
+    /* --- 4. CEREMONY & RECEPTION CARDS (XẾP DỌC: LỄ THÀNH HÔN TRƯỚC, TIỆC CƯỚI SAU) --- */
     .event-cards-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      max-width: 440px;
       margin: 32px auto 0;
-    }
-    @media (min-width: 560px) {
-      .event-cards-grid {
-        grid-template-columns: 1fr 1fr;
-        max-width: 580px;
-      }
     }
     .event-card {
       background: #ffffff;
@@ -984,62 +978,6 @@
       margin: 0;
     }
 
-    /* --- FAQ (ĐIỀU CẦN BIẾT) --- */
-    .faq-container {
-      max-width: 480px;
-      margin: 36px auto 0;
-      text-align: left;
-    }
-    .faq-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 16px;
-    }
-    .faq-item {
-      background: #ffffff;
-      border: 1px solid rgba(223, 181, 100, 0.45);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: var(--shadow-sm);
-      transition: all 0.25s ease;
-    }
-    .faq-q {
-      padding: 15px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      font-weight: 600;
-      font-size: 13.5px;
-      color: var(--crimson-main);
-      user-select: none;
-    }
-    .faq-icon {
-      font-size: 18px;
-      color: #c98e3b;
-      transition: transform 0.25s ease;
-      flex-shrink: 0;
-      line-height: 1;
-    }
-    .faq-item.active .faq-icon {
-      transform: rotate(45deg);
-    }
-    .faq-a {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.35s ease, padding 0.35s ease;
-      padding: 0 18px;
-      font-size: 13px;
-      line-height: 1.7;
-      color: var(--muted);
-    }
-    .faq-item.active .faq-a {
-      max-height: 220px;
-      padding: 10px 18px 15px;
-      border-top: 1px dashed rgba(223, 181, 100, 0.35);
-    }
 
     /* --- 7. TIMELINE (PHÙ HỢP TIỆC 11H & LỄ 8H) --- */
     .timeline {
@@ -1581,17 +1519,6 @@
       .t-time {
         font-size: 17px;
       }
-      .faq-q {
-        padding: 13px 14px;
-        font-size: 13px;
-      }
-      .faq-a {
-        padding: 0 14px;
-      }
-      .faq-item.active .faq-a {
-        padding: 8px 14px 13px;
-        font-size: 12.5px;
-      }
       .story-mini-box {
         padding: 18px 14px;
         border-radius: 16px;
@@ -1796,6 +1723,11 @@
               Cử hành nghi lễ gia tiên tại<br>
               <b>Tư gia</b>
             </div>
+          </div>
+
+          <!-- Divider chuyển tiếp thời gian giữa 2 sự kiện -->
+          <div style="text-align: center; color: var(--gold-pure); font-size: 15px; margin: -6px 0; opacity: 0.85; letter-spacing: 0.3em;">
+            ✦ · 🙛 · ✦
           </div>
 
           <!-- Card 2: Tiệc Cưới 11:00 -->
@@ -2059,57 +1991,6 @@
           </div>
         </div>
 
-        <!-- FAQ (ĐIỀU CẦN BIẾT) -->
-        <div class="faq-container">
-          <div class="eyebrow" style="color: var(--crimson-main); text-align: center;">Hỏi & Đáp</div>
-          <h3 style="margin: 0; text-align: center; font-family: 'Playfair Display', serif; font-size: 24px; color: var(--crimson-main);">
-            Điều Cần Biết
-          </h3>
-          
-          <div class="faq-list">
-            
-            <div class="faq-item">
-              <div class="faq-q">
-                <span>🚗 Bãi đỗ xe tại nhà hàng như thế nào?</span>
-                <span class="faq-icon">+</span>
-              </div>
-              <div class="faq-a">
-                Nhà hàng Tiệc cưới Thanh Khiết có bãi đỗ xe máy và bãi giữ ô tô riêng biệt, khuôn viên rộng rãi, có nhân viên an ninh hướng dẫn và hoàn toàn miễn phí cho quý quan khách.
-              </div>
-            </div>
-
-            <div class="faq-item">
-              <div class="faq-q">
-                <span>⏰ Thời gian đón khách & khai tiệc mừng?</span>
-                <span class="faq-icon">+</span>
-              </div>
-              <div class="faq-a">
-                Sảnh tiệc bắt đầu đón khách và chụp ảnh lưu niệm cùng cô dâu chú rể từ <b>10:30 sáng</b>. Chương trình nghi lễ và khai tiệc mừng sẽ chính thức bắt đầu vào đúng <b>11:00 Chủ Nhật, 20/12/2026</b>.
-              </div>
-            </div>
-
-            <div class="faq-item">
-              <div class="faq-q">
-                <span>👶 Mình có thể dẫn theo người thân hoặc bé nhỏ?</span>
-                <span class="faq-icon">+</span>
-              </div>
-              <div class="faq-a">
-                Đôi bạn rất hân hạnh chào đón! Bạn vui lòng ghi chú số lượng người tham dự hoặc yêu cầu ghế trẻ em trong phần Xác nhận tham dự (RSVP) bên dưới để gia đình sắp xếp chu đáo nhất.
-              </div>
-            </div>
-
-            <div class="faq-item">
-              <div class="faq-q">
-                <span>👗 Gợi ý trang phục tham dự (Dress Code)?</span>
-                <span class="faq-icon">+</span>
-              </div>
-              <div class="faq-a">
-                Khuyến khích trang phục lịch sự, trang nhã với các tone màu ấm áp như: <b>Đỏ Son, Vàng Gold, Be / Trắng Kem</b> để cùng lên hình thật lung linh và đồng điệu nhé!
-              </div>
-            </div>
-
-          </div>
-        </div>
 
         <!-- 8. GIFT & BANK QR -->
         <div class="gift-wrap">
@@ -2121,12 +2002,12 @@
             Nếu không thể có mặt chung vui, tình cảm và lời chúc của bạn luôn là món quà vô giá đối với chúng tôi.
           </p>
           <div class="qr-frame" id="qrClick" title="Bấm để phóng to">
-            <img src="qr-bank.png" alt="Mã QR mừng hỷ" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=PhuongUyenQuangDao';">
+            <img src="qr-bank.png" alt="Mã QR mừng hỷ" onerror="this.src='https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=NguyenPhuongUyen';">
           </div>
           <div class="bank-info">
             <b>NGÂN HÀNG BIDV</b><br>
             STK: <span id="stkText" style="font-family: monospace; font-size: 17px; font-weight: 700; color: var(--crimson-main);">6710462434</span><br>
-            Chủ TK: <b>NGUYỄN QUANG ĐẠO</b>
+            Chủ TK: <b>NGUYỄN PHƯƠNG UYÊN</b>
           </div>
           <button type="button" class="btn-copy" id="copyStkBtn">📋 Sao chép số tài khoản</button>
         </div>
@@ -2628,17 +2509,6 @@
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    // --- FAQ ACCORDION TOGGLE ---
-    document.querySelectorAll('.faq-item').forEach(item => {
-      const q = item.querySelector('.faq-q');
-      if (q) {
-        q.addEventListener('click', () => {
-          const wasActive = item.classList.contains('active');
-          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
-          if (!wasActive) item.classList.add('active');
-        });
-      }
-    });
 
     // --- SCROLL REVEAL ---
     const observer = new IntersectionObserver(entries => {
