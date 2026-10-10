@@ -56,6 +56,17 @@
       overflow: hidden;
     }
 
+    /* --- FALLING PETALS CANVAS (HIỆU ỨNG CÁNH HOA RƠI NHẸ TRANG CHỦ) --- */
+    .petal-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 80;
+    }
+
     /* --- 1. LUXURY BRIGHT COVER SCREEN --- */
     /* --- 1. TC29 SIGNATURE OPENING SCREEN: GẤM SON THÊU HỶ --- */
     .cover {
@@ -63,7 +74,7 @@
       inset: 0;
       z-index: 9999;
       background:
-        radial-gradient(circle at 50% 30%, rgba(160, 20, 35, 0.82) 0%, rgba(90, 8, 18, 0.90) 55%, rgba(35, 3, 8, 0.96) 100%),
+        radial-gradient(circle at 50% 30%, rgba(185, 25, 45, 0.46) 0%, rgba(115, 12, 25, 0.62) 55%, rgba(45, 4, 10, 0.78) 100%),
         url('images/anh_cuoi_ao_dai_do.jpg') center/cover no-repeat;
       display: flex;
       align-items: center;
@@ -106,12 +117,12 @@
       width: min(92vw, 420px);
       position: relative;
       padding: 36px 22px 32px;
-      background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.14) 0%, rgba(40, 5, 10, 0.78) 100%);
-      border: 1px solid rgba(245, 215, 150, 0.65);
+      background: radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.20) 0%, rgba(55, 7, 14, 0.64) 100%);
+      border: 1px solid rgba(245, 215, 150, 0.75);
       border-radius: 26px;
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 235, 185, 0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 25px 80px rgba(0, 0, 0, 0.45), inset 0 0 0 1px rgba(255, 235, 185, 0.4);
       text-align: center;
       color: #fff;
     }
@@ -363,13 +374,14 @@
       color: #fff;
       padding: 90px 24px 70px;
       background:
-        linear-gradient(180deg, rgba(20, 2, 5, 0.22) 0%, rgba(55, 6, 14, 0.38) 42%, rgba(89, 9, 20, 0.88) 82%, #590914 100%),
+        linear-gradient(180deg, rgba(20, 2, 5, 0.11) 0%, rgba(55, 6, 14, 0.19) 42%, rgba(89, 9, 20, 0.44) 82%, rgba(89, 9, 20, 0.50) 100%),
         url('images/anh_cuoi_ao_dai_do.jpg') center 20%/cover no-repeat;
     }
     .hero-inner {
       position: relative;
       z-index: 2;
       max-width: 520px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75), 0 4px 26px rgba(45, 4, 10, 0.85);
     }
     .hero-kicker {
       font-size: 11px;
@@ -1533,6 +1545,9 @@
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- FALLING FLOWER PETALS (CÁNH HOA RƠI NHẸ TRANG CHỦ) -->
+  <canvas id="petalCanvas" class="petal-canvas"></canvas>
+
   <!-- 1. TC29 SIGNATURE OPENING SCREEN: GẤM SON THÊU HỶ -->
   <div class="cover" id="cover">
     <div class="particles" id="coverParticles"></div>
@@ -1559,10 +1574,6 @@
               <span class="gso-hy">囍</span>
             </div>
           </div>
-        </div>
-
-        <div class="gso-scene-label">
-          MỖI ĐƯỜNG KIM MŨI CHỈ — THÊU NÊN CHUYỆN TRĂM NĂM
         </div>
 
         <div class="gso-kicker-wrap">
@@ -2520,6 +2531,108 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // --- 9. FALLING PETALS EFFECT FOR MAIN PAGE (CÁNH HOA RƠI NHẸ TRANG CHỦ) ---
+    (function initPetals() {
+      const canvas = document.getElementById('petalCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      function resize() {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize, { passive: true });
+
+      const PETAL_COUNT = 26; // Mật độ vừa phải, thanh thoát, không che chữ
+      const petals = [];
+
+      // Bảng màu cánh hoa đám cưới: hồng phấn, hồng đào, đỏ son phớt, vàng ánh kim
+      const petalColors = [
+        'rgba(255, 175, 189, 0.68)',
+        'rgba(255, 195, 205, 0.62)',
+        'rgba(235, 95, 115, 0.58)',
+        'rgba(248, 140, 160, 0.65)',
+        'rgba(255, 218, 140, 0.55)'
+      ];
+
+      function createPetal(initY) {
+        return {
+          x: Math.random() * width,
+          y: initY !== undefined ? initY : -20,
+          size: Math.random() * 7 + 10,
+          speedY: Math.random() * 0.9 + 0.7,
+          speedX: Math.random() * 0.5 - 0.25,
+          wobble: Math.random() * Math.PI * 2,
+          wobbleSpeed: Math.random() * 0.02 + 0.012,
+          angle: Math.random() * Math.PI * 2,
+          angleSpeed: (Math.random() - 0.5) * 0.02,
+          flip: Math.random() * Math.PI,
+          flipSpeed: Math.random() * 0.025 + 0.012,
+          color: petalColors[Math.floor(Math.random() * petalColors.length)],
+          opacity: Math.random() * 0.35 + 0.50
+        };
+      }
+
+      for (let i = 0; i < PETAL_COUNT; i++) {
+        petals.push(createPetal(Math.random() * height));
+      }
+
+      function drawSinglePetal(p) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.scale(Math.cos(p.flip), 1);
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(-p.size * 0.5, -p.size * 0.4, -p.size * 0.5, -p.size * 0.9, 0, -p.size * 1.2);
+        ctx.bezierCurveTo(p.size * 0.5, -p.size * 0.9, p.size * 0.5, -p.size * 0.4, 0, 0);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      let animId;
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+
+        for (let i = 0; i < petals.length; i++) {
+          const p = petals[i];
+          p.wobble += p.wobbleSpeed;
+          p.angle += p.angleSpeed;
+          p.flip += p.flipSpeed;
+
+          p.y += p.speedY;
+          p.x += Math.sin(p.wobble) * 0.8 + p.speedX;
+
+          if (p.y > height + 25) {
+            petals[i] = createPetal(-20);
+          }
+          if (p.x > width + 25) p.x = -20;
+          if (p.x < -25) p.x = width + 20;
+
+          drawSinglePetal(p);
+        }
+
+        animId = requestAnimationFrame(animate);
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          cancelAnimationFrame(animId);
+        } else {
+          animId = requestAnimationFrame(animate);
+        }
+      });
+
+      animate();
+    })();
   </script>
 </body>
 </html>
