@@ -1921,12 +1921,19 @@
       opacity: 1;
     }
 
-    /* Floating Music Disc with Play/Pause Icon */
-    .music-disc {
+    /* Floating Music Controller (Disc & Next Track Button) */
+    .music-controller-wrap {
       position: fixed;
       right: 18px;
       bottom: 20px;
       z-index: 500;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 7px;
+    }
+    .music-disc {
+      position: relative;
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -1939,6 +1946,11 @@
       align-items: center;
       justify-content: center;
       transition: transform 0.2s, box-shadow 0.25s;
+      padding: 0;
+    }
+    .music-disc:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 20px rgba(255, 215, 120, 0.6);
     }
     .music-disc.playing {
       animation: spin-disc 4s linear infinite;
@@ -1970,6 +1982,30 @@
     .music-disc.playing .music-icon {
       margin-left: 0;
       font-size: 11px;
+    }
+    .music-next-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #520912 0%, #290307 100%);
+      border: 1.5px solid var(--gold-pure);
+      color: #ffd987;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.22s ease;
+      padding: 0;
+    }
+    .music-next-btn:hover {
+      transform: scale(1.12);
+      background: var(--crimson-main);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(255, 217, 135, 0.65);
+    }
+    .music-next-btn:active {
+      transform: scale(0.92);
     }
 
     /* Back to Top Button (Nút quay về đầu trang) */
@@ -2196,9 +2232,9 @@
 </head>
 <body>
 
-  <!-- BACKGROUND MUSIC -->
-  <audio id="bgMusic" loop preload="none">
-    <source src="music.mp3" type="audio/mpeg">
+  <!-- BACKGROUND MUSIC (PLAYLIST) -->
+  <audio id="bgMusic" preload="auto">
+    <source id="musicSource" src="music.mp3" type="audio/mpeg">
   </audio>
 
   <!-- FALLING FLOWER PETALS (CÁNH HOA RƠI NHẸ TRANG CHỦ) -->
@@ -2874,9 +2910,17 @@
   <!-- TOAST NOTIFICATION -->
   <div class="toast" id="toast">Thông báo</div>
 
-  <!-- FLOATING MUSIC BUTTON -->
-  <div class="music-disc" id="musicBtn" title="Bật / Tắt nhạc cưới" aria-label="Bật / Tắt nhạc cưới">
-    <span class="music-icon" id="musicIcon">▶</span>
+  <!-- FLOATING MUSIC CONTROLLER (PLAY/PAUSE & NEXT TRACK) -->
+  <div class="music-controller-wrap" id="musicControllerWrap">
+    <button type="button" class="music-next-btn" id="musicNextBtn" title="Chuyển sang bài tiếp theo (⏭)" aria-label="Chuyển bài tiếp theo">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+        <polygon points="5 4 15 12 5 20 5 4"></polygon>
+        <line x1="19" y1="4" x2="19" y2="20" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"></line>
+      </svg>
+    </button>
+    <button type="button" class="music-disc" id="musicBtn" title="Bật / Tắt nhạc cưới" aria-label="Bật / Tắt nhạc cưới">
+      <span class="music-icon" id="musicIcon">▶</span>
+    </button>
   </div>
 
   <!-- BACK TO TOP BUTTON (QUAY VỀ TRANG ĐẦU) -->
@@ -2902,15 +2946,28 @@
       }
     }
 
-    // --- 2. MUSIC, OPEN ENVELOPE & BACK TO TOP ---
+    // --- 2. MUSIC PLAYLIST, OPEN ENVELOPE & BACK TO TOP ---
     const cover = document.getElementById('cover');
     const music = document.getElementById('bgMusic');
     const musicBtn = document.getElementById('musicBtn');
     const musicIcon = document.getElementById('musicIcon');
+    const musicNextBtn = document.getElementById('musicNextBtn');
     const openInvite = document.getElementById('openInvite');
     const backToTopBtn = document.getElementById('backToTopBtn');
 
+    // Danh sách nhạc nền (Hết bài 1 sang bài 2, hết bài 2 sang bài 1 và có nút Next)
+    const playlist = [
+      { title: 'Ánh Nắng Của Anh (Nhạc Cưới)', src: 'music.mp3' },
+      { title: 'Một Lòng Son (Nhạc Cưới)', src: 'music2.weba' }
+    ];
+    let currentTrackIdx = 0;
     let isPlaying = false;
+
+    function setTrack(idx) {
+      currentTrackIdx = (idx + playlist.length) % playlist.length;
+      music.src = playlist[currentTrackIdx].src;
+      music.load();
+    }
 
     async function playAudio() {
       try {
@@ -2921,6 +2978,32 @@
       } catch (e) {
         console.log('Autoplay block:', e);
       }
+    }
+
+    async function playNextTrack(isAuto = false) {
+      currentTrackIdx = (currentTrackIdx + 1) % playlist.length;
+      setTrack(currentTrackIdx);
+      try {
+        await music.play();
+        musicBtn.classList.add('playing');
+        if (musicIcon) musicIcon.textContent = '❚❚';
+        isPlaying = true;
+        showToast(`${isAuto ? 'Tự động sang bài' : 'Chuyển bài'}: ${playlist[currentTrackIdx].title} 🎵`);
+      } catch (e) {
+        console.warn('Next track play error:', e);
+      }
+    }
+
+    // Tự động chuyển bài khi hết nhạc: Hết bài kia sang bài này
+    music.addEventListener('ended', () => {
+      playNextTrack(true);
+    });
+
+    if (musicNextBtn) {
+      musicNextBtn.onclick = (e) => {
+        e.stopPropagation();
+        playNextTrack(false);
+      };
     }
 
     // --- HIỆU ỨNG MỞ THIỆP: GẤM SON THÊU HỶ ---
@@ -2984,12 +3067,14 @@
       });
     }
 
-    musicBtn.onclick = () => {
+    musicBtn.onclick = (e) => {
+      e.stopPropagation();
       if (music.paused) {
-        music.play();
-        musicBtn.classList.add('playing');
-        if (musicIcon) musicIcon.textContent = '❚❚';
-        showToast('Đang phát nhạc ♪');
+        music.play().then(() => {
+          musicBtn.classList.add('playing');
+          if (musicIcon) musicIcon.textContent = '❚❚';
+          showToast(`Đang phát: ${playlist[currentTrackIdx].title} ♪`);
+        }).catch(err => console.log(err));
       } else {
         music.pause();
         musicBtn.classList.remove('playing');
