@@ -73,26 +73,18 @@
       position: fixed;
       inset: 0;
       z-index: 9999;
-      background:
-        radial-gradient(circle at 50% 30%, rgba(185, 25, 45, 0.46) 0%, rgba(115, 12, 25, 0.62) 55%, rgba(45, 4, 10, 0.78) 100%),
-        url('images/anh_cuoi_ao_dai_do.jpg') center 20%/cover no-repeat;
+      background-color: #580913;
+      background-image:
+        radial-gradient(circle at 50% 40%, rgba(195, 28, 48, 0.92) 0%, rgba(125, 12, 24, 0.96) 55%, #350308 100%),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23ffd885' stroke-width='0.75' stroke-opacity='0.14'%3E%3Cpath d='M22 0 L44 22 L22 44 L0 22 Z'/%3E%3Ccircle cx='22' cy='22' r='7'/%3E%3Ccircle cx='0' cy='0' r='5'/%3E%3Ccircle cx='44' cy='0' r='5'/%3E%3Ccircle cx='0' cy='44' r='5'/%3E%3Ccircle cx='44' cy='44' r='5'/%3E%3C/g%3E%3C/svg%3E");
+      background-repeat: no-repeat, repeat;
+      background-size: cover, 44px 44px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 16px;
       transition: all 1s cubic-bezier(0.77, 0, 0.175, 1);
       overflow-y: auto;
-    }
-    @media (min-width: 900px) {
-      .cover {
-        background-position: center, center 16%;
-        justify-content: flex-end;
-        padding-right: max(6vw, 50px);
-      }
-      .gso-frame {
-        width: 390px;
-        margin: 0;
-      }
     }
     .cover.hide {
       opacity: 0;
