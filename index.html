@@ -1563,23 +1563,27 @@
     .sync-banner-header {
       display: flex;
       align-items: center;
-      gap: 10px;
-      margin-bottom: 10px;
+      gap: 12px;
+      margin-bottom: 8px;
       text-align: left;
     }
     .sync-icon {
-      font-size: 26px;
+      font-size: 28px;
       line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .sync-title {
-      font-size: 14px;
+      font-size: 14.5px;
       font-weight: 700;
       color: var(--crimson-main);
     }
     .sync-subtitle {
-      font-size: 12px;
+      font-size: 12.5px;
       color: #666;
-      margin-top: 2px;
+      margin-top: 3px;
+      line-height: 1.4;
     }
     .sync-photo-badge {
       background: var(--crimson-main);
@@ -1588,6 +1592,21 @@
       border-radius: 10px;
       font-size: 12px;
       font-weight: 700;
+    }
+    .upload-progress-wrap {
+      margin-top: 10px;
+      background: rgba(0,0,0,0.08);
+      border-radius: 999px;
+      height: 8px;
+      overflow: hidden;
+      width: 100%;
+    }
+    .upload-progress-bar {
+      background: linear-gradient(90deg, #d4af6a 0%, #ba8c3e 100%);
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      transition: width 0.3s ease;
     }
     .sync-drive-btn {
       display: flex;
@@ -1604,10 +1623,35 @@
       background: linear-gradient(135deg, #d4af6a 0%, #aa8038 100%);
       color: #ffffff;
       transition: all 0.25s ease;
+      margin-top: 10px;
     }
     .sync-drive-btn:hover {
       transform: translateY(-1px);
       box-shadow: 0 6px 20px rgba(186, 140, 62, 0.5);
+    }
+    .thumb-status-badge {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 6px;
+      pointer-events: none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+    .thumb-status-badge.uploading {
+      background: rgba(26, 26, 26, 0.88);
+      color: #ffd987;
+    }
+    .thumb-status-badge.success {
+      background: #2e7d32;
+      color: #ffffff;
+    }
+    .thumb-status-badge.error {
+      background: #c62828;
+      color: #ffffff;
     }
     .preview-header-bar {
       display: flex;
@@ -2536,17 +2580,20 @@
 
             <!-- Preview list & Drive sync banner -->
             <div class="guest-preview-area" id="guestPreviewArea" style="display: none;">
-              <!-- Google Drive Sync Banner (Auto active when guest picks photos) -->
+              <!-- Google Drive Sync & Upload Banner -->
               <div class="guest-sync-banner" id="guestSyncBanner">
                 <div class="sync-banner-header">
-                  <span class="sync-icon">🚀</span>
-                  <div>
-                    <div class="sync-title">Đã chọn thành công <span class="sync-photo-badge" id="syncPhotoCountBadge">0</span> ảnh!</div>
-                    <div class="sync-subtitle">Chạm nút bên dưới để mở Thư mục Drive và lưu vào album chung:</div>
+                  <span class="sync-icon" id="syncStatusIcon">🚀</span>
+                  <div style="flex: 1;">
+                    <div class="sync-title" id="syncStatusTitle">Đang chuẩn bị tải <span class="sync-photo-badge" id="syncPhotoCountBadge">0</span> ảnh...</div>
+                    <div class="sync-subtitle" id="syncStatusSubtitle">Ảnh đang được tải tự động vào Thư mục Google Drive đám cưới.</div>
+                    <div class="upload-progress-wrap" id="uploadProgressWrap" style="display: none;">
+                      <div class="upload-progress-bar" id="uploadProgressBar"></div>
+                    </div>
                   </div>
                 </div>
-                <a href="https://drive.google.com/drive/folders/1y7IIrTUAq-jq1LbmmVe7DS-Nt6rtHd4_?usp=drive_link" target="_blank" rel="noopener" class="sync-drive-btn" id="syncDriveBtn">
-                  <span>📁 Mở Google Drive &amp; Bấm dấu [+] để Tải Lên</span>
+                <a href="https://drive.google.com/drive/folders/1y7IIrTUAq-jq1LbmmVe7DS-Nt6rtHd4_?usp=drive_link" target="_blank" rel="noopener" class="sync-drive-btn" id="syncDriveBtn" style="display: none;">
+                  <span>📂 Mở Thư Mục Google Drive Đám Cưới</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
               </div>
@@ -3268,15 +3315,6 @@
         }
       }
 
-      // 2. Gửi sao lưu về Server nội bộ (/api/rsvp)
-      try {
-        await fetch('/api/rsvp', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-      } catch (err) {}
-
       // 3. Lưu vào localStorage và hiển thị lên Sổ Lưu Bút
       try {
         const list = JSON.parse(localStorage.getItem('weddingRSVP_list') || '[]');
@@ -3332,7 +3370,7 @@
 
     loadGuestbook();
 
-    // --- 8. GUEST PHOTO UPLOAD HANDLING ---
+    // --- 8. GUEST PHOTO UPLOAD HANDLING (GOOGLE APPS SCRIPT -> GOOGLE DRIVE) ---
     const guestPhotoInput = document.getElementById('guestPhotoInput');
     const guestSelectBtn = document.getElementById('guestSelectBtn');
     const guestUploadZone = document.getElementById('guestUploadZone');
@@ -3340,51 +3378,81 @@
     const guestPreviewGrid = document.getElementById('guestPreviewGrid');
     const guestPhotoCount = document.getElementById('guestPhotoCount');
     const guestSyncBanner = document.getElementById('guestSyncBanner');
-    const syncPhotoCountBadge = document.getElementById('syncPhotoCountBadge');
+    const syncStatusIcon = document.getElementById('syncStatusIcon');
+    const syncStatusTitle = document.getElementById('syncStatusTitle');
+    const syncStatusSubtitle = document.getElementById('syncStatusSubtitle');
+    const uploadProgressWrap = document.getElementById('uploadProgressWrap');
+    const uploadProgressBar = document.getElementById('uploadProgressBar');
+    const syncDriveBtn = document.getElementById('syncDriveBtn');
     const guestAddMoreBtn = document.getElementById('guestAddMoreBtn');
     const guestClearBtn = document.getElementById('guestClearBtn');
+
+    // Google Apps Script endpoint tải ảnh trực tiếp vào Thư mục Google Drive:
+    const GOOGLE_UPLOAD_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbynKHudJmOVKQI594_TdV0aBi86jhxCOc3kkZ00jk7NeIeLOdVzNZyIAeQ7e81SUyS1-Q/exec';
     const DRIVE_FOLDER_URL = 'https://drive.google.com/drive/folders/1y7IIrTUAq-jq1LbmmVe7DS-Nt6rtHd4_?usp=drive_link';
 
     let currentGuestImages = [];
+    let isUploading = false;
 
     if (guestSelectBtn && guestPhotoInput) {
       guestSelectBtn.onclick = (e) => {
         e.stopPropagation();
+        if (isUploading) {
+          showToast('Đang tải ảnh lên Google Drive, bạn vui lòng đợi chút nhé...');
+          return;
+        }
         guestPhotoInput.click();
       };
     }
     if (guestUploadZone && guestPhotoInput) {
       guestUploadZone.onclick = (e) => {
         if (e.target.closest('a') || e.target.closest('button')) return;
+        if (isUploading) {
+          showToast('Đang tải ảnh lên Google Drive, bạn vui lòng đợi chút nhé...');
+          return;
+        }
         guestPhotoInput.click();
       };
     }
     if (guestAddMoreBtn && guestPhotoInput) {
       guestAddMoreBtn.onclick = (e) => {
         e.stopPropagation();
+        if (isUploading) {
+          showToast('Đang tải ảnh lên Google Drive, bạn vui lòng đợi chút nhé...');
+          return;
+        }
         guestPhotoInput.click();
       };
     }
     if (guestClearBtn) {
       guestClearBtn.onclick = () => {
+        if (isUploading) {
+          showToast('Đang tải ảnh lên Google Drive, bạn vui lòng đợi chút nhé...');
+          return;
+        }
         try { localStorage.removeItem('wedding_guest_photos'); } catch (e) {}
         currentGuestImages = [];
         if (guestPreviewGrid) guestPreviewGrid.innerHTML = '';
         if (guestPreviewArea) guestPreviewArea.style.display = 'none';
-        showToast('Đã xóa danh sách ảnh tạm thời.');
+        showToast('Đã xóa danh sách ảnh xem trước.');
       };
     }
 
-    function renderGuestThumb(src) {
-      if (!guestPreviewGrid) return;
+    function renderGuestThumb(src, badgeText = '✓ Đã lưu', badgeClass = 'success', id = null) {
+      if (!guestPreviewGrid) return null;
       const item = document.createElement('div');
       item.className = 'guest-preview-item';
-      item.innerHTML = `<img src="${src}" alt="Ảnh khách gửi" loading="lazy">`;
+      if (id) item.id = id;
+      item.innerHTML = `
+        <img src="${src}" alt="Ảnh khách gửi" loading="lazy">
+        <span class="thumb-status-badge ${badgeClass}">${badgeText}</span>
+      `;
       item.onclick = (e) => {
         e.stopPropagation();
         openLightbox(src);
       };
       guestPreviewGrid.appendChild(item);
+      return item;
     }
 
     function loadGuestPhotos() {
@@ -3394,49 +3462,97 @@
           currentGuestImages = [...saved];
           guestPreviewArea.style.display = 'block';
           guestPhotoCount.innerText = saved.length;
-          if (syncPhotoCountBadge) syncPhotoCountBadge.innerText = saved.length;
+          if (syncStatusTitle) syncStatusTitle.innerHTML = `Đã lưu <span class="sync-photo-badge">${saved.length}</span> ảnh vào Album Google Drive!`;
+          if (syncStatusSubtitle) syncStatusSubtitle.innerText = 'Cảm ơn bạn đã đóng góp khoảnh khắc ngọt ngào vào ngày vui của Phương Uyên & Quang Đạo!';
+          if (syncStatusIcon) syncStatusIcon.innerText = '✅';
+          if (syncDriveBtn) syncDriveBtn.style.display = 'flex';
           if (guestPreviewGrid) {
             guestPreviewGrid.innerHTML = '';
-            saved.forEach(renderGuestThumb);
+            saved.forEach(src => renderGuestThumb(src, '✓ Đã lưu', 'success'));
           }
         }
       } catch (e) {}
     }
 
-    // Nén ảnh nhỏ gọn (max 150px) để lưu vào localStorage an toàn mà không bị lỗi QuotaExceededError
-    function createThumbnail(file, maxDim = 150) {
+    // Nén ảnh tối ưu trước khi gửi lên Apps Script (max 2000px, JPEG 0.85) để tải siêu tốc độ mà vẫn giữ độ nét cao
+    function prepareImageForUpload(file, maxDim = 2000, quality = 0.85) {
       return new Promise((resolve) => {
-        try {
+        if (!file.type.startsWith('image/')) {
           const reader = new FileReader();
-          reader.onload = (e) => {
-            const img = new Image();
-            img.onload = () => {
-              try {
-                let w = img.width;
-                let h = img.height;
-                if (w > h) {
-                  if (w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
-                } else {
-                  if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
-                }
-                const canvas = document.createElement('canvas');
-                canvas.width = w;
-                canvas.height = h;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, w, h);
-                resolve(canvas.toDataURL('image/jpeg', 0.6));
-              } catch (err) {
-                resolve(null);
-              }
-            };
-            img.onerror = () => resolve(null);
-            img.src = e.target.result;
-          };
+          reader.onload = (e) => resolve({ dataUri: e.target.result, fileName: file.name, mimeType: file.type });
           reader.onerror = () => resolve(null);
           reader.readAsDataURL(file);
-        } catch (err) {
-          resolve(null);
+          return;
         }
+
+        const img = new Image();
+        const objectUrl = URL.createObjectURL(file);
+        img.onload = () => {
+          try {
+            let w = img.width;
+            let h = img.height;
+            if (w > maxDim || h > maxDim) {
+              if (w > h) {
+                h = Math.round((h * maxDim) / w);
+                w = maxDim;
+              } else {
+                w = Math.round((w * maxDim) / h);
+                h = maxDim;
+              }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+            const dataUri = canvas.toDataURL(mime, quality);
+            resolve({ dataUri, fileName: file.name, mimeType: mime });
+          } catch (err) {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve({ dataUri: e.target.result, fileName: file.name, mimeType: file.type });
+            reader.onerror = () => resolve(null);
+            reader.readAsDataURL(file);
+          } finally {
+            URL.revokeObjectURL(objectUrl);
+          }
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(objectUrl);
+          const reader = new FileReader();
+          reader.onload = (e) => resolve({ dataUri: e.target.result, fileName: file.name, mimeType: file.type });
+          reader.onerror = () => resolve(null);
+          reader.readAsDataURL(file);
+        };
+        img.src = objectUrl;
+      });
+    }
+
+    // Tạo thumbnail nhỏ 150px lưu cache vào localStorage
+    function createSmallThumbnail(dataUri, maxDim = 150) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          try {
+            let w = img.width;
+            let h = img.height;
+            if (w > h) {
+              if (w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+            } else {
+              if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+            }
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', 0.6));
+          } catch (e) {
+            resolve(null);
+          }
+        };
+        img.onerror = () => resolve(null);
+        img.src = dataUri;
       });
     }
 
@@ -3450,56 +3566,120 @@
           return;
         }
 
-        // 1. Hiển thị ngay lập tức (Instant Preview) bằng Blob URL siêu tốc độ, không bao giờ bị đơ
+        isUploading = true;
         if (guestPreviewArea) guestPreviewArea.style.display = 'block';
         if (guestSyncBanner) guestSyncBanner.style.display = 'block';
+        if (uploadProgressWrap) uploadProgressWrap.style.display = 'block';
+        if (uploadProgressBar) uploadProgressBar.style.width = '0%';
+        if (syncDriveBtn) syncDriveBtn.style.display = 'none';
 
-        validFiles.forEach(file => {
-          try {
-            const blobUrl = URL.createObjectURL(file);
-            currentGuestImages.push(blobUrl);
-            renderGuestThumb(blobUrl);
-          } catch (err) {}
+        if (syncStatusIcon) syncStatusIcon.innerText = '📤';
+        if (syncStatusTitle) {
+          syncStatusTitle.innerHTML = `Đang tải ảnh lên Google Drive... (<span id="syncCurrentIdx">0</span>/${validFiles.length})`;
+        }
+        if (syncStatusSubtitle) {
+          syncStatusSubtitle.innerText = 'Vui lòng giữ trang web, ảnh đang được gửi trực tiếp vào Folder Google Drive...';
+        }
+
+        // Tạo item preview tức thì cho từng ảnh
+        const previewItems = [];
+        validFiles.forEach((file, index) => {
+          const blobUrl = URL.createObjectURL(file);
+          const itemId = 'upload_thumb_' + Date.now() + '_' + index;
+          renderGuestThumb(blobUrl, '⏳ Đang gửi...', 'uploading', itemId);
+          previewItems.push({ file, blobUrl, itemId });
         });
 
-        const totalCount = currentGuestImages.length;
+        const totalCount = currentGuestImages.length + validFiles.length;
         if (guestPhotoCount) guestPhotoCount.innerText = totalCount;
-        if (syncPhotoCountBadge) syncPhotoCountBadge.innerText = totalCount;
 
-        showToast(`Đã nhận ${validFiles.length} ảnh! Đang mở Thư mục Google Drive... 📷✨`);
-
-        // 2. Tự động mở Google Drive folder trong tab mới
-        try {
-          window.open(DRIVE_FOLDER_URL, '_blank');
-        } catch (err) {}
-
-        // Cuộn nhẹ xuống vùng preview để khách thấy ảnh và nút tải Drive
         setTimeout(() => {
           if (guestPreviewArea) {
             guestPreviewArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
-        }, 300);
+        }, 200);
 
-        // 3. Nén thumbnail nhỏ lưu vào localStorage an toàn (chỉ lưu tối đa 20 tấm gần nhất)
-        (async () => {
+        let successCount = 0;
+        const newSuccessfulThumbs = [];
+
+        for (let i = 0; i < previewItems.length; i++) {
+          const item = previewItems[i];
+          const badgeEl = document.querySelector('#' + item.itemId + ' .thumb-status-badge');
+          const syncCurrentIdx = document.getElementById('syncCurrentIdx');
+          if (syncCurrentIdx) syncCurrentIdx.innerText = i + 1;
+
           try {
-            let savedThumbs = [];
-            try {
-              savedThumbs = JSON.parse(localStorage.getItem('wedding_guest_photos') || '[]');
-              if (!Array.isArray(savedThumbs)) savedThumbs = [];
-            } catch (err) {
-              savedThumbs = [];
-            }
-            for (const file of validFiles) {
-              const thumb = await createThumbnail(file, 150);
-              if (thumb) savedThumbs.push(thumb);
-            }
-            if (savedThumbs.length > 20) savedThumbs = savedThumbs.slice(-20);
-            localStorage.setItem('wedding_guest_photos', JSON.stringify(savedThumbs));
-          } catch (err) {}
-        })();
+            const prepared = await prepareImageForUpload(item.file);
+            if (!prepared || !prepared.dataUri) throw new Error('Không thể đọc file');
 
-        // Reset input để có thể chọn tiếp nếu muốn
+            const response = await fetch(GOOGLE_UPLOAD_SCRIPT_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+              body: JSON.stringify({
+                file: prepared.dataUri,
+                fileName: prepared.fileName,
+                mimeType: prepared.mimeType
+              })
+            });
+
+            const result = await response.json();
+            if (result && result.success) {
+              successCount++;
+              if (badgeEl) {
+                badgeEl.className = 'thumb-status-badge success';
+                badgeEl.innerText = '✓ Đã lưu';
+              }
+              const thumb = await createSmallThumbnail(prepared.dataUri);
+              if (thumb) newSuccessfulThumbs.push(thumb);
+            } else {
+              throw new Error(result ? result.message : 'Upload failed');
+            }
+          } catch (uploadErr) {
+            console.error('Lỗi tải ảnh:', uploadErr);
+            if (badgeEl) {
+              badgeEl.className = 'thumb-status-badge error';
+              badgeEl.innerText = '⚠️ Lỗi';
+            }
+          }
+
+          if (uploadProgressBar) {
+            const percent = Math.round(((i + 1) / previewItems.length) * 100);
+            uploadProgressBar.style.width = percent + '%';
+          }
+        }
+
+        isUploading = false;
+        if (uploadProgressWrap) {
+          setTimeout(() => { uploadProgressWrap.style.display = 'none'; }, 1000);
+        }
+
+        if (successCount > 0) {
+          if (syncStatusIcon) syncStatusIcon.innerText = '✅';
+          if (syncStatusTitle) {
+            syncStatusTitle.innerHTML = `Đã tải thành công ${successCount}/${validFiles.length} ảnh vào Google Drive! 🎉`;
+          }
+          if (syncStatusSubtitle) {
+            syncStatusSubtitle.innerText = 'Ảnh của bạn đã được cập nhật trực tiếp vào Album đám cưới của Phương Uyên & Quang Đạo. ❤️';
+          }
+          if (syncDriveBtn) syncDriveBtn.style.display = 'flex';
+          showToast(`Đã tải thành công ${successCount} ảnh vào Google Drive! Cảm ơn bạn! 📸❤️`);
+
+          try {
+            let saved = [];
+            try { saved = JSON.parse(localStorage.getItem('wedding_guest_photos') || '[]'); } catch (e) { saved = []; }
+            saved = saved.concat(newSuccessfulThumbs);
+            if (saved.length > 20) saved = saved.slice(-20);
+            localStorage.setItem('wedding_guest_photos', JSON.stringify(saved));
+            currentGuestImages = saved;
+          } catch (e) {}
+        } else {
+          if (syncStatusIcon) syncStatusIcon.innerText = '⚠️';
+          if (syncStatusTitle) syncStatusTitle.innerText = 'Không thể tải ảnh vào Google Drive';
+          if (syncStatusSubtitle) syncStatusSubtitle.innerText = 'Vui lòng kiểm tra lại kết nối mạng hoặc mở Thư mục Drive để tải lên trực tiếp.';
+          if (syncDriveBtn) syncDriveBtn.style.display = 'flex';
+          showToast('Không thể tải ảnh. Bạn có thể mở Thư mục Google Drive để tải trực tiếp nhé!');
+        }
+
         guestPhotoInput.value = '';
       });
     }
