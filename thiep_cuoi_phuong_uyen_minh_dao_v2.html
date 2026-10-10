@@ -204,33 +204,59 @@
       transform: translate(-50%, -50%) scale(1);
     }
 
-    /* 3. Một đường chỉ vàng chạy ngang */
-    .gso-thread-line {
+    /* 3. Hiệu ứng sợi chỉ vàng uốn lượn thêu qua màn hình */
+    .gso-wavy-thread-wrap {
       position: absolute;
       top: 50%;
       left: 0;
-      width: 0%;
-      height: 3.5px;
-      background: linear-gradient(90deg, transparent 0%, #e5be70 20%, #ffd987 50%, #ffffff 98%, #ffffff 100%);
-      box-shadow: 0 0 16px #ffd987, 0 0 30px #ffeaa3, 0 0 6px #ffffff;
-      transform: translateY(-50%);
-      z-index: 9;
-      pointer-events: none;
-      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-    .gso-thread-needle {
-      position: absolute;
-      right: -8px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #ffffff 30%, #ffd987 70%, transparent 100%);
-      box-shadow: 0 0 18px #ffffff, 0 0 28px #ffd987;
-    }
-    .shoot-thread .gso-thread-line {
       width: 100%;
+      height: 240px;
+      transform: translateY(-50%);
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+      overflow: visible;
+      transition: opacity 0.3s ease;
+    }
+    .cover.opening .gso-wavy-thread-wrap {
+      opacity: 1;
+    }
+    .gso-wavy-thread-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .gso-wavy-path-glow {
+      fill: none;
+      stroke: #ffd987;
+      stroke-width: 9px;
+      stroke-linecap: round;
+      opacity: 0.75;
+      filter: drop-shadow(0 0 16px #ffd987) drop-shadow(0 0 28px #ffeaa3);
+      stroke-dasharray: 1600;
+      stroke-dashoffset: 1600;
+      transition: stroke-dashoffset 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .gso-wavy-path-core {
+      fill: none;
+      stroke: url(#goldThreadGrad);
+      stroke-width: 4.5px;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 10px #ffffff);
+      stroke-dasharray: 1600;
+      stroke-dashoffset: 1600;
+      transition: stroke-dashoffset 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .shoot-thread .gso-wavy-path-glow,
+    .shoot-thread .gso-wavy-path-core {
+      stroke-dashoffset: 0;
+    }
+    .shoot-thread .gso-wavy-thread-svg {
+      animation: threadWaveFloating 2s ease-in-out infinite alternate;
+    }
+    @keyframes threadWaveFloating {
+      0% { transform: scaleY(1); }
+      100% { transform: scaleY(1.15) translateY(-3px); }
     }
 
     .particles {
@@ -2192,9 +2218,22 @@
       <span class="gso-ceremony-char">囍</span>
     </div>
 
-    <!-- Một đường chỉ vàng chạy ngang -->
-    <div class="gso-thread-line" id="ceremonyThread">
-      <div class="gso-thread-needle"></div>
+    <!-- Đường chỉ vàng uốn lượn thêu qua màn hình -->
+    <div class="gso-wavy-thread-wrap" id="ceremonyThread">
+      <svg class="gso-wavy-thread-svg" viewBox="0 0 1200 240" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="goldThreadGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#ba8c3e" stop-opacity="0.3"/>
+            <stop offset="25%" stop-color="#ffd987" stop-opacity="0.95"/>
+            <stop offset="60%" stop-color="#ffffff" stop-opacity="1"/>
+            <stop offset="90%" stop-color="#ffd987" stop-opacity="0.95"/>
+            <stop offset="100%" stop-color="#fff4d0" stop-opacity="1"/>
+          </linearGradient>
+        </defs>
+        <!-- Đường chỉ tơ uốn lượn lấp lánh như nét thêu gấm lụa -->
+        <path class="gso-wavy-path-glow" d="M -50 120 C 150 20, 250 220, 450 120 C 650 20, 750 220, 950 120 C 1080 40, 1180 190, 1250 120" />
+        <path class="gso-wavy-path-core" d="M -50 120 C 150 20, 250 220, 450 120 C 650 20, 750 220, 950 120 C 1080 40, 1180 190, 1250 120" />
+      </svg>
     </div>
 
     <div class="particles" id="coverParticles"></div>
@@ -2548,10 +2587,10 @@
         <div class="guest-album-box reveal">
           <div class="guest-album-header">
             <div class="guest-album-icon">📷</div>
-            <div class="eyebrow" style="color: #ba8c3e; margin-bottom: 4px;">Kỷ Niệm Cùng Bạn Bè</div>
+            <div class="eyebrow" style="color: #ba8c3e; margin-bottom: 4px;">Kỷ Niệm Ngày Chung Đôi</div>
             <h3 class="guest-album-title">Gửi Ảnh Bạn Chụp Tại Đám Cưới</h3>
             <p class="guest-album-lead">
-              Bạn có những khoảnh khắc đẹp, vui tươi hay những tấm hình selfie cùng cô dâu &amp; chú rể trong ngày cưới? Hãy cùng chia sẻ vào album chung này để chúng mình cùng lưu giữ trọn vẹn từng kỷ niệm ngọt ngào nhé!
+              Mỗi bức hình selfie hay khoảnh khắc rạng rỡ bạn chụp trong ngày cưới đều là món quà vô giá dành tặng Phương Uyên &amp; Quang Đạo. Hãy cùng gửi vào album chung để chúng mình cùng lưu giữ trọn vẹn kỷ niệm ngọt ngào này nhé! ❤️
             </p>
           </div>
 
@@ -2566,15 +2605,12 @@
               </div>
               <div class="upload-prompt">
                 <b>Chạm để chọn &amp; tải ảnh từ điện thoại của bạn</b>
-                <span>Hỗ trợ chọn nhiều ảnh cùng lúc từ Thư viện / Camera</span>
+                <span>Hệ thống tự động lưu vào Album chung (hỗ trợ chọn nhiều ảnh JPG, PNG)</span>
               </div>
-              <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 6px;">
+              <div style="margin-top: 6px;">
                 <button type="button" class="btn btn-gold guest-upload-btn" id="guestSelectBtn">
-                  📸 Chọn &amp; Tải Ảnh Lên
+                  📸 Tải Ảnh Lên Album Ngay
                 </button>
-                <a href="https://drive.google.com/drive/folders/1y7IIrTUAq-jq1LbmmVe7DS-Nt6rtHd4_?usp=drive_link" target="_blank" rel="noopener" class="btn-pill-small" style="display: inline-flex; align-items: center; gap: 4px; padding: 10px 16px; font-size: 13px;" onclick="event.stopPropagation();">
-                  📂 Mở Folder Drive
-                </a>
               </div>
             </div>
 
@@ -2586,20 +2622,20 @@
                   <span class="sync-icon" id="syncStatusIcon">🚀</span>
                   <div style="flex: 1;">
                     <div class="sync-title" id="syncStatusTitle">Đang chuẩn bị tải <span class="sync-photo-badge" id="syncPhotoCountBadge">0</span> ảnh...</div>
-                    <div class="sync-subtitle" id="syncStatusSubtitle">Ảnh đang được tải tự động vào Thư mục Google Drive đám cưới.</div>
+                    <div class="sync-subtitle" id="syncStatusSubtitle">Ảnh đang được tải tự động vào Album đám cưới của Phương Uyên &amp; Quang Đạo.</div>
                     <div class="upload-progress-wrap" id="uploadProgressWrap" style="display: none;">
                       <div class="upload-progress-bar" id="uploadProgressBar"></div>
                     </div>
                   </div>
                 </div>
                 <a href="https://drive.google.com/drive/folders/1y7IIrTUAq-jq1LbmmVe7DS-Nt6rtHd4_?usp=drive_link" target="_blank" rel="noopener" class="sync-drive-btn" id="syncDriveBtn" style="display: none;">
-                  <span>📂 Mở Thư Mục Google Drive Đám Cưới</span>
+                  <span>📸 Album Hình Cưới Cùng Chia Sẻ</span>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
               </div>
 
               <div class="preview-header-bar">
-                <div class="guest-preview-title" style="margin-bottom: 0;">✨ Ảnh bạn đã chọn (<span id="guestPhotoCount">0</span> tấm - Chạm để xem to):</div>
+                <div class="guest-preview-title" style="margin-bottom: 0;">✨ Khoảnh khắc bạn vừa chia sẻ (<span id="guestPhotoCount">0</span> tấm - Chạm để xem to):</div>
                 <div class="guest-action-btns">
                   <button type="button" class="btn-pill-small" id="guestAddMoreBtn">➕ Thêm ảnh</button>
                   <button type="button" class="btn-pill-small" id="guestClearBtn">🗑️ Xóa</button>
@@ -2607,15 +2643,15 @@
               </div>
               <div class="guest-preview-grid" id="guestPreviewGrid"></div>
               <div class="guest-upload-success-note">
-                Cảm ơn bạn đã đóng góp khoảnh khắc tuyệt vời này vào ngày vui của Phương Uyên &amp; Quang Đạo! ❤️
+                Chân thành cảm ơn bạn đã gửi gắm những khoảnh khắc tuyệt vời này vào ngày vui của Phương Uyên &amp; Quang Đạo! ❤️
               </div>
             </div>
 
             <!-- Google Drive Folder Link -->
             <div class="guest-cloud-links">
-              <div class="cloud-hint">Hoặc bạn có thể truy cập thẳng vào Thư mục Google Drive của đám cưới:</div>
+              <div class="cloud-hint">Xem tất cả các bức ảnh kỷ niệm được khách mời cùng chia sẻ:</div>
               <a href="https://drive.google.com/drive/folders/1y7IIrTUAq-jq1LbmmVe7DS-Nt6rtHd4_?usp=drive_link" target="_blank" rel="noopener" class="cloud-album-btn" id="cloudAlbumLink">
-                <span>📂 Folder Google Drive Album Khách Mời</span>
+                <span>📸 Album Hình Cưới Cùng Chia Sẻ</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
               </a>
             </div>
@@ -3462,7 +3498,7 @@
           currentGuestImages = [...saved];
           guestPreviewArea.style.display = 'block';
           guestPhotoCount.innerText = saved.length;
-          if (syncStatusTitle) syncStatusTitle.innerHTML = `Đã lưu <span class="sync-photo-badge">${saved.length}</span> ảnh vào Album Google Drive!`;
+          if (syncStatusTitle) syncStatusTitle.innerHTML = `Đã lưu <span class="sync-photo-badge">${saved.length}</span> ảnh vào Album Hình Cưới Cùng Chia Sẻ!`;
           if (syncStatusSubtitle) syncStatusSubtitle.innerText = 'Cảm ơn bạn đã đóng góp khoảnh khắc ngọt ngào vào ngày vui của Phương Uyên & Quang Đạo!';
           if (syncStatusIcon) syncStatusIcon.innerText = '✅';
           if (syncDriveBtn) syncDriveBtn.style.display = 'flex';
@@ -3575,10 +3611,10 @@
 
         if (syncStatusIcon) syncStatusIcon.innerText = '📤';
         if (syncStatusTitle) {
-          syncStatusTitle.innerHTML = `Đang tải ảnh lên Google Drive... (<span id="syncCurrentIdx">0</span>/${validFiles.length})`;
+          syncStatusTitle.innerHTML = `Đang tải ảnh lên Album chung... (<span id="syncCurrentIdx">0</span>/${validFiles.length})`;
         }
         if (syncStatusSubtitle) {
-          syncStatusSubtitle.innerText = 'Vui lòng giữ trang web, ảnh đang được gửi trực tiếp vào Folder Google Drive...';
+          syncStatusSubtitle.innerText = 'Vui lòng giữ trang web, ảnh đang được gửi trực tiếp vào Album Hình Cưới Cùng Chia Sẻ...';
         }
 
         // Tạo item preview tức thì cho từng ảnh
@@ -3656,13 +3692,13 @@
         if (successCount > 0) {
           if (syncStatusIcon) syncStatusIcon.innerText = '✅';
           if (syncStatusTitle) {
-            syncStatusTitle.innerHTML = `Đã tải thành công ${successCount}/${validFiles.length} ảnh vào Google Drive! 🎉`;
+            syncStatusTitle.innerHTML = `Đã tải thành công ${successCount}/${validFiles.length} ảnh vào Album chung! 🎉`;
           }
           if (syncStatusSubtitle) {
-            syncStatusSubtitle.innerText = 'Ảnh của bạn đã được cập nhật trực tiếp vào Album đám cưới của Phương Uyên & Quang Đạo. ❤️';
+            syncStatusSubtitle.innerText = 'Ảnh của bạn đã được lưu vào Album Hình Cưới Cùng Chia Sẻ của Phương Uyên & Quang Đạo. ❤️';
           }
           if (syncDriveBtn) syncDriveBtn.style.display = 'flex';
-          showToast(`Đã tải thành công ${successCount} ảnh vào Google Drive! Cảm ơn bạn! 📸❤️`);
+          showToast(`Đã tải thành công ${successCount} ảnh vào Album! Cảm ơn bạn! 📸❤️`);
 
           try {
             let saved = [];
@@ -3674,10 +3710,10 @@
           } catch (e) {}
         } else {
           if (syncStatusIcon) syncStatusIcon.innerText = '⚠️';
-          if (syncStatusTitle) syncStatusTitle.innerText = 'Không thể tải ảnh vào Google Drive';
-          if (syncStatusSubtitle) syncStatusSubtitle.innerText = 'Vui lòng kiểm tra lại kết nối mạng hoặc mở Thư mục Drive để tải lên trực tiếp.';
+          if (syncStatusTitle) syncStatusTitle.innerText = 'Chưa tải được ảnh vào Album';
+          if (syncStatusSubtitle) syncStatusSubtitle.innerText = 'Vui lòng kiểm tra kết nối mạng hoặc mở Album Hình Cưới Cùng Chia Sẻ để tải trực tiếp nhé.';
           if (syncDriveBtn) syncDriveBtn.style.display = 'flex';
-          showToast('Không thể tải ảnh. Bạn có thể mở Thư mục Google Drive để tải trực tiếp nhé!');
+          showToast('Chưa tải được ảnh. Bạn có thể mở Album Hình Cưới Cùng Chia Sẻ để gửi nhé!');
         }
 
         guestPhotoInput.value = '';
