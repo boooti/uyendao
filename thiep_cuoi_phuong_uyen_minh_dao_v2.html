@@ -921,14 +921,14 @@
       margin-bottom: 8px;
     }
     .album-stack-wrap {
-      max-width: 480px;
-      margin: 12px auto 0;
+      max-width: 580px;
+      margin: 16px auto 0;
       position: relative;
     }
     .album-stack-stage {
       position: relative;
       width: 100%;
-      height: 380px;
+      height: 490px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -936,17 +936,28 @@
       user-select: none;
       touch-action: pan-y;
     }
+    @media (max-width: 480px) {
+      .album-stack-stage {
+        height: 440px;
+      }
+    }
     .album-stack-card {
       position: absolute;
-      width: min(72vw, 265px);
-      height: 345px;
+      width: min(85vw, 340px);
+      height: 440px;
       border: 8px solid #fffdfa;
-      border-radius: 18px;
-      box-shadow: 0 18px 40px rgba(45, 15, 20, 0.26), 0 2px 6px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      box-shadow: 0 20px 48px rgba(45, 15, 20, 0.28), 0 3px 8px rgba(0,0,0,0.12);
       overflow: hidden;
-      cursor: pointer;
+      cursor: zoom-in;
       background: #fff;
-      transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease, filter 0.35s ease, box-shadow 0.3s ease;
+      transition: transform 0.42s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease, filter 0.35s ease, box-shadow 0.3s ease;
+    }
+    @media (max-width: 480px) {
+      .album-stack-card {
+        width: min(86vw, 320px);
+        height: 400px;
+      }
     }
     .album-stack-card img {
       width: 100%;
@@ -954,44 +965,53 @@
       object-fit: cover;
       display: block;
       pointer-events: none;
+      transition: transform 0.35s ease;
     }
     .album-stack-card:hover {
-      box-shadow: 0 24px 55px rgba(45, 15, 20, 0.35);
+      box-shadow: 0 26px 58px rgba(45, 15, 20, 0.38);
+    }
+    .album-stack-card:hover img {
+      transform: scale(1.02);
     }
     .album-controls {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      margin-top: 18px;
+      gap: 16px;
+      margin-top: 20px;
     }
     .album-btn {
-      padding: 9px 20px;
+      padding: 10px 28px;
       border-radius: 999px;
-      border: 1px solid var(--gold-pure);
+      border: 1.5px solid var(--gold-pure);
       background: #ffffff;
       color: var(--crimson-main);
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
+      letter-spacing: 0.03em;
       cursor: pointer;
       box-shadow: 0 4px 14px rgba(0,0,0,0.08);
-      transition: all 0.2s;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 120px;
     }
     .album-btn:hover {
-      background: var(--gold-pure);
-      color: #fff;
-      transform: translateY(-2px);
-    }
-    .album-btn-zoom {
-      background: linear-gradient(135deg, #ffd987 0%, #db9d3b 100%);
+      background: linear-gradient(135deg, #ffd987 0%, #d49a30 100%);
       color: #4a070f;
-      border-color: #e5a73e;
+      border-color: #ffd987;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(180, 130, 50, 0.28);
+    }
+    .album-btn:active {
+      transform: translateY(0);
     }
     .album-thumbs {
       display: flex;
       justify-content: center;
       gap: 6px;
-      margin-top: 14px;
+      margin-top: 16px;
       flex-wrap: wrap;
     }
     .album-thumb-dot {
@@ -1007,42 +1027,77 @@
       background: var(--crimson-main);
     }
 
-    /* LIGHTBOX MODAL */
+    /* LIGHTBOX MODAL (BẤM VÀO PHÓNG TO, BẤM LẦN NỮA THU NHỎ) */
     .lightbox {
       position: fixed;
       inset: 0;
       z-index: 10000;
-      background: rgba(18, 2, 5, 0.95);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      display: none;
+      background: rgba(15, 2, 4, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: flex;
       align-items: center;
       justify-content: center;
-      padding: 24px;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: zoom-out;
     }
-    .lightbox.active { display: flex; }
+    .lightbox.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
     .lightbox img {
-      max-width: 90vw;
-      max-height: 82vh;
+      max-width: 92vw;
+      max-height: 84vh;
       border-radius: 18px;
-      box-shadow: 0 25px 70px rgba(0,0,0,0.65);
-      border: 2px solid rgba(255, 255, 255, 0.35);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.7), 0 0 0 1px rgba(255, 217, 135, 0.35);
+      border: 3px solid rgba(255, 255, 255, 0.45);
       object-fit: contain;
+      transform: scale(0.88);
+      transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.3, 1);
+      cursor: zoom-out;
+    }
+    .lightbox.active img {
+      transform: scale(1);
     }
     .lightbox-close {
       position: absolute;
-      top: 22px;
-      right: 22px;
+      top: 20px;
+      right: 20px;
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.18);
+      border: 1px solid rgba(255, 255, 255, 0.35);
       color: #fff;
-      font-size: 22px;
+      font-size: 20px;
       cursor: pointer;
       display: grid;
       place-items: center;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.08);
+    }
+    .lightbox-hint {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 217, 135, 0.4);
+      color: #ffd987;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      padding: 6px 18px;
+      border-radius: 999px;
+      pointer-events: none;
+      backdrop-filter: blur(6px);
+      white-space: nowrap;
     }
 
     /* --- ĐÔI KHUNG THÊU UYÊN ƯƠNG (EMBROIDERY HOOPS) --- */
@@ -2601,7 +2656,7 @@
         <div style="text-align: center;">
           <span class="album-badge-counter" id="albumCounter">01 / 05 — GẤM SON THÊU HỶ</span>
         </div>
-        <p class="lead" style="margin-bottom: 24px;">Mỗi khoảnh khắc là một mũi thêu kỷ niệm — Chạm vào ảnh để lật thẻ</p>
+        <p class="lead" style="margin-bottom: 24px;">Mỗi khoảnh khắc là một mũi thêu kỷ niệm — Chạm vào ảnh để phóng lớn</p>
 
         <!-- Stack Container -->
         <div class="album-stack-wrap">
@@ -2609,11 +2664,10 @@
             <!-- Rendered by JS -->
           </div>
           
-          <!-- Stack Controls -->
+          <!-- Stack Controls (Chỉ có nút qua lại) -->
           <div class="album-controls">
-            <button class="album-btn" id="albumPrevBtn" type="button" aria-label="Ảnh trước">‹ Trước</button>
-            <button class="album-btn album-btn-zoom" id="albumZoomBtn" type="button" aria-label="Phóng to ảnh">🔍 Phóng to</button>
-            <button class="album-btn" id="albumNextBtn" type="button" aria-label="Ảnh sau">Sau ›</button>
+            <button class="album-btn" id="albumPrevBtn" type="button" aria-label="Ảnh trước">‹ Ảnh trước</button>
+            <button class="album-btn" id="albumNextBtn" type="button" aria-label="Ảnh sau">Ảnh sau ›</button>
           </div>
 
           <div class="album-thumbs" id="albumThumbs"></div>
@@ -2878,10 +2932,11 @@
 
   </div>
 
-  <!-- LIGHTBOX MODAL -->
-  <div class="lightbox" id="lightbox">
-    <button class="lightbox-close" id="lbClose">✕</button>
-    <img id="lbImg" src="" alt="Ảnh cưới phóng to">
+  <!-- LIGHTBOX MODAL (CHẠM VÀO ẢNH PHÓNG TO, CHẠM LẦN NỮA THU NHỎ) -->
+  <div class="lightbox" id="lightbox" title="Chạm vào ảnh để thu nhỏ">
+    <button class="lightbox-close" id="lbClose" aria-label="Đóng ảnh phóng to">✕</button>
+    <img id="lbImg" src="" alt="Ảnh cưới phóng to" title="Chạm vào ảnh để thu nhỏ">
+    <div class="lightbox-hint">Chạm vào ảnh để thu nhỏ ✕</div>
   </div>
 
   <!-- POPUP MODAL ĐÃ XÁC NHẬN ✓ -->
@@ -3148,7 +3203,6 @@
     const albumThumbs = document.getElementById('albumThumbs');
     const albumPrevBtn = document.getElementById('albumPrevBtn');
     const albumNextBtn = document.getElementById('albumNextBtn');
-    const albumZoomBtn = document.getElementById('albumZoomBtn');
 
     let currentStackIdx = 0;
     const stackCards = [];
@@ -3161,7 +3215,8 @@
         card.innerHTML = `<img src="${photo.url}" alt="${photo.caption}">`;
         card.onclick = () => {
           if (idx === currentStackIdx) {
-            nextStackCard();
+            // Bấm vào hình để phóng lớn (chạm lần nữa thì thu nhỏ)
+            openLightbox(photo.url);
           } else {
             setStackIndex(idx);
           }
@@ -3187,29 +3242,34 @@
             card.style.opacity = '1';
             card.style.filter = 'none';
             card.style.pointerEvents = 'auto';
+            card.style.cursor = 'zoom-in';
           } else if (offset === 1) {
-            card.style.transform = 'translate3d(14px, 12px, -20px) rotate(3.5deg) scale(0.95)';
+            card.style.transform = 'translate3d(16px, 14px, -20px) rotate(3.5deg) scale(0.95)';
             card.style.zIndex = '19';
             card.style.opacity = '0.9';
             card.style.filter = 'brightness(0.92)';
             card.style.pointerEvents = 'auto';
+            card.style.cursor = 'pointer';
           } else if (offset === 2) {
-            card.style.transform = 'translate3d(-14px, 20px, -40px) rotate(-3.5deg) scale(0.90)';
+            card.style.transform = 'translate3d(-16px, 24px, -40px) rotate(-3.5deg) scale(0.90)';
             card.style.zIndex = '18';
             card.style.opacity = '0.75';
             card.style.filter = 'brightness(0.85)';
             card.style.pointerEvents = 'none';
+            card.style.cursor = 'default';
           } else if (offset === 3) {
-            card.style.transform = 'translate3d(8px, 26px, -60px) rotate(2deg) scale(0.85)';
+            card.style.transform = 'translate3d(10px, 32px, -60px) rotate(2deg) scale(0.85)';
             card.style.zIndex = '17';
             card.style.opacity = '0.5';
             card.style.filter = 'brightness(0.78)';
             card.style.pointerEvents = 'none';
+            card.style.cursor = 'default';
           } else {
-            card.style.transform = 'translate3d(0, 30px, -80px) rotate(0deg) scale(0.8)';
+            card.style.transform = 'translate3d(0, 36px, -80px) rotate(0deg) scale(0.8)';
             card.style.zIndex = '10';
             card.style.opacity = '0';
             card.style.pointerEvents = 'none';
+            card.style.cursor = 'default';
           }
         });
 
@@ -3271,11 +3331,6 @@
 
       if (albumNextBtn) albumNextBtn.onclick = () => nextStackCard();
       if (albumPrevBtn) albumPrevBtn.onclick = () => prevStackCard();
-      if (albumZoomBtn) {
-        albumZoomBtn.onclick = () => {
-          openLightbox(albumPhotos[currentStackIdx].url);
-        };
-      }
 
       let sStartX = 0;
       let sStartY = 0;
@@ -3299,17 +3354,39 @@
       updateStackDisplay();
     }
 
-    // --- 5. LIGHTBOX MODAL ---
+    // --- 5. LIGHTBOX MODAL (BẤM VÀO PHÓNG LỚN, BẤM LẦN NỮA THU NHỎ) ---
     const lightbox = document.getElementById('lightbox');
     const lbImg = document.getElementById('lbImg');
     const lbClose = document.getElementById('lbClose');
 
     function openLightbox(src) {
+      if (!lightbox || !lbImg) return;
       lbImg.src = src;
       lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
     }
-    lbClose.onclick = () => lightbox.classList.remove('active');
-    lightbox.onclick = (e) => { if (e.target === lightbox) lightbox.classList.remove('active'); };
+
+    function closeLightbox() {
+      if (!lightbox) return;
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    if (lbClose) {
+      lbClose.onclick = (e) => {
+        e.stopPropagation();
+        closeLightbox();
+      };
+    }
+    if (lightbox) {
+      // Bấm vào hình phóng lớn lần nữa hoặc bấm vào màn hình để thu nhỏ
+      lightbox.onclick = () => closeLightbox();
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+        closeLightbox();
+      }
+    });
 
     // --- 6. AI WISH SUGGESTION ---
     const aiWishes = [
